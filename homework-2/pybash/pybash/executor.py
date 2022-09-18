@@ -9,4 +9,4 @@ class Executor:
         QueryParser().call(query).run()
 
 
-Executor().call("cat 123") # Just for testing purposes.
+Executor().call("cat 123")  # Just for testing purposes.
