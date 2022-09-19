@@ -31,5 +31,5 @@ jobs:
         working-directory: ./pybash
       - run: poetry install --no-interaction
         working-directory: ./pybash
-      - run: poetry run mamba tests
+      - run: poetry run pytest
         working-directory: ./pybash
