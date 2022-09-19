@@ -1,5 +1,6 @@
-from abc import ABC, abstractmethod
 import os.path
+
+from abc import ABC, abstractmethod
 
 
 class Command(ABC):
@@ -8,13 +9,10 @@ class Command(ABC):
 
     @staticmethod
     def build(command: str, arguments: list[str]):
-        match str(command):
-            case "echo":
-                return EchoCommand(arguments)
-            case "cat":
-                return CatCommand(arguments)
-            case _:
-                pass  # FIXME: Handle via some sort of ExternalCommand.
+        mapping = {"echo": EchoCommand, "cat": CatCommand}
+        handler = mapping.get(command, ExternalCommand)
+
+        return handler(arguments)
 
     @abstractmethod
     def run(self, arguments: list[str]) -> tuple[str, int]:
@@ -52,3 +50,9 @@ class CatCommand(Command):
                     output += f.read()
 
         return output, exit_status
+
+
+class ExternalCommand(Command):
+    def run(self, name, arguments: list[str]) -> tuple[str, int]:
+        # TODO: Implement.
+        pass
