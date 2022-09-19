@@ -28,5 +28,8 @@ jobs:
           key: pydeps-${{ hashFiles('**/poetry.lock') }}
       - run: poetry install --no-interaction --no-root
         if: steps.cache-deps.outputs.cache-hit != 'true'
+        working-directory: ./pybash
       - run: poetry install --no-interaction
-      - run: cd pybash && poetry run mamba tests
+        working-directory: ./pybash
+      - run: poetry run mamba tests
+        working-directory: ./pybash
