@@ -3,7 +3,6 @@ from ply import lex
 
 class LexicalParser:
     tokens = ("TERM", "ASSIGNMENT")
-    # tokens = ("TERM", )
 
     t_ignore = " \t\n"
     t_TERM = r"[a-zA-Z]+[0-9]*"

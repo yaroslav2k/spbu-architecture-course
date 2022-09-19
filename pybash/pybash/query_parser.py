@@ -15,10 +15,6 @@ class QueryParser:
         "term : TERM"
         p[0] = [p[1]]
 
-    # def p_empty(self, p):
-    #     "empty :"
-    #     pass
-
     def p_assignment(self, p):
         "assignment : ASSIGNMENT"
 
@@ -35,10 +31,6 @@ class QueryParser:
             p[0] = (p[1] or []) + p[2]
         else:
             p[0] = p[1]
-
-    # def p_assignment(self, p):
-    #     "assignment : ASSIGNMENT"
-    #     p[0] = p[1]
 
     def p_error(self, p):
         print("Syntax error in input!")
