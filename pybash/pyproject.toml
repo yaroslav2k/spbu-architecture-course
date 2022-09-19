@@ -2,12 +2,14 @@
 name = "pybash"
 version = "0.1.0"
 description = ""
-authors = ["yaroslav2k <iaroslav2k@gmail.com>"]
+authors = ["yaroslav2k <iaroslav2k@gmail.com>", "Nickkreker <ask-for-mail@gmail.ocm>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
 black = "^22.8.0"
+mamba = "^0.11.2"
+expects = "^0.9.0"
 
 
 [build-system]
