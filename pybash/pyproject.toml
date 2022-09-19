@@ -2,7 +2,7 @@
 name = "pybash"
 version = "0.1.0"
 description = ""
-authors = ["yaroslav2k <ya2kleet@gcodexoptimus.pro>", "Nickkreker <ask-for-mail@example.com>"]
+authors = ["yaroslav2k <ya2kleet@gcodexoptimus.pro>", "Nickkreker <nick_berezikov@me.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
