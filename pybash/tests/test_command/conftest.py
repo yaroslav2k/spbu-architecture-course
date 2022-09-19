@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.fixture(scope="session")
 def text_file(tmp_path_factory):
     content = "Hello world!"
