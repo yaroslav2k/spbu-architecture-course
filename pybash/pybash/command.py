@@ -8,7 +8,7 @@ class Command(ABC):
 
     @abstractmethod
     def run(self, arguments: list[str]) -> tuple[str, int]:
-        '''
+        """
         Runs the command with given list of arguments.
 
         Parameters
@@ -20,7 +20,7 @@ class Command(ABC):
         -------
         tuple[str, int]
             command output and exit status
-        '''
+        """
         pass
 
 
@@ -34,7 +34,7 @@ class CatCommand(Command):
         output = ""
         for file_path in arguments:
             if not os.path.exists(file_path):
-                output += f'cat: {file_path}: No such file or directory'
+                output += f"cat: {file_path}: No such file or directory"
                 return output, 1
 
             with open(file_path) as f:
