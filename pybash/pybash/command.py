@@ -3,8 +3,18 @@ import os.path
 
 
 class Command(ABC):
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self, arguments: list[str]):
+        self.arguments = arguments
+
+    @staticmethod
+    def build(command: str, arguments: list[str]):
+        match str(command):
+            case "echo":
+                return EchoCommand(arguments)
+            case "cat":
+                return CatCommand(arguments)
+            case _:
+                pass  # FIXME: Handle via some sort of ExternalCommand.
 
     @abstractmethod
     def run(self, arguments: list[str]) -> tuple[str, int]:
