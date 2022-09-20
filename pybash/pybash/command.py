@@ -4,25 +4,22 @@ from abc import ABC, abstractmethod
 
 
 class Command(ABC):
+    EXIT_SUCCESS = 0
+
     def __init__(self, arguments: list[str]):
         self.arguments = arguments
 
     @staticmethod
     def build(command: str, arguments: list[str]):
-        mapping = {"echo": EchoCommand, "cat": CatCommand}
+        mapping = {"echo": EchoCommand, "cat": CatCommand, "assign": AssignCommand}
         handler = mapping.get(command, ExternalCommand)
 
         return handler(arguments)
 
     @abstractmethod
-    def run(self, arguments: list[str]) -> tuple[str, int]:
+    def run(self) -> tuple[str, int]:
         """
         Runs the command with given list of arguments.
-
-        Parameters
-        ----------
-        arguments: list[str]
-            arguments of a command
 
         Returns
         -------
@@ -33,15 +30,15 @@ class Command(ABC):
 
 
 class EchoCommand(Command):
-    def run(self, arguments: list[str]) -> tuple[str, int]:
-        return " ".join(arguments), 0
+    def run(self) -> tuple[str, int]:
+        return " ".join(self.arguments), Command.EXIT_SUCCESS
 
 
 class CatCommand(Command):
-    def run(self, arguments: list[str]) -> tuple[str, int]:
+    def run(self) -> tuple[str, int]:
         output = ""
-        exit_status = 0
-        for file_path in arguments:
+        exit_status = Command.EXIT_SUCCESS
+        for file_path in self.arguments:
             if not os.path.exists(file_path):
                 output += f"cat: {file_path}: No such file or directory\n"
                 exit_status = 1
@@ -53,6 +50,18 @@ class CatCommand(Command):
 
 
 class ExternalCommand(Command):
-    def run(self, name, arguments: list[str]) -> tuple[str, int]:
+    def run(self) -> tuple[str, int]:
         # TODO: Implement.
-        pass
+        return (
+            f"Exucuting external command with arguments {self.arguments}\n",
+            Command.EXIT_SUCCESS,
+        )
+
+
+class AssignCommand(Command):
+    def run(self) -> tuple[str, int]:
+        # TODO: Implement.
+        return (
+            f"Exucuting assign command with arguments {self.arguments}\n",
+            Command.EXIT_SUCCESS,
+        )

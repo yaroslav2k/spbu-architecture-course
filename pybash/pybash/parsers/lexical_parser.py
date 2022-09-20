@@ -11,6 +11,11 @@ class LexicalParser:
     def __init__(self):
         self.lexer = lex.lex(module=self)
 
+    def parse(self, string):
+        self.lexer.input(string)
+
+        return list(self.lexer)
+
     def t_error(self, t):
         print("Illegal character '%s'" % t.value[0])
         t.lexer.skip(1)

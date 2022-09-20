@@ -1,12 +1,11 @@
-from query_parser import QueryParser
+import sys
+
+from pybash.parser import Parser
+from pybash.command_executor import CommandExecutor
 
 
 class Executor:
-    def __init__(self):
-        pass
+    def call(self, string):
+        command, arguments = Parser().parse(string)
 
-    def call(self, query):
-        QueryParser().call(query).run()
-
-
-Executor().call("cat 123")  # Just for testing purposes.
+        CommandExecutor(sys.stdin, sys.stdout, sys.stderr).execute(command, arguments)

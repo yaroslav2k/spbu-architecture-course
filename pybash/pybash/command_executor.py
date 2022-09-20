@@ -1,4 +1,4 @@
-from command import EchoCommand, CatCommand
+from pybash.command import Command
 
 
 class CommandExecutor:
@@ -13,6 +13,6 @@ class CommandExecutor:
 
         self._output_stream.write(output)
         if exit_code > 0:
-            self._error_stream.write(str(exit_status))
+            self._error_stream.write(str(exit_code))
 
         return 0

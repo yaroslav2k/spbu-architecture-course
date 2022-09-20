@@ -1,15 +1,17 @@
-from .command import Command
-from .lexical_parser import LexicalParser
+from pybash.command import Command
 
 import ply.yacc as yacc
 
 
-class QueryParser:
+class SemanticParser:
     start = "expression"
 
-    def __init__(self):
-        self.tokens = LexicalParser.tokens
+    def __init__(self, tokens):
+        self.tokens = tokens
         self.parser = yacc.yacc(module=self)
+
+    def parse(self, string):
+        return self.parser.parse(string)
 
     def p_term(self, p):
         "term : TERM"
@@ -19,7 +21,7 @@ class QueryParser:
         "assignment : ASSIGNMENT"
 
         tokens = p[1].split("=")
-        p[0] = [(tokens[0], tokens[1])]
+        p[0] = ["assign", tokens[0], tokens[1]]
 
     def p_expression(self, p):
         # fmt: off
