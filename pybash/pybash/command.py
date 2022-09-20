@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 
 class Command(ABC):
     """Abstract class that represents a command."""
+
     EXIT_SUCCESS = 0
 
     def __init__(self):
@@ -26,7 +27,7 @@ class Command(ABC):
         ----------
         arguments: list[str]
             arguments of a command
-        
+
         Returns
         -------
         tuple[str, int]
@@ -37,12 +38,14 @@ class Command(ABC):
 
 class EchoCommand(Command):
     """Class that represents echo command."""
+
     def run(self, arguments: list[str]) -> tuple[str, int]:
         return " ".join(arguments) + "\n", Command.EXIT_SUCCESS
 
 
 class CatCommand(Command):
     """Class that represents cat command."""
+
     def run(self, arguments: list[str]) -> tuple[str, int]:
         output = ""
         exit_status = Command.EXIT_SUCCESS
