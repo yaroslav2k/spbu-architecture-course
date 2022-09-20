@@ -6,15 +6,15 @@ from abc import ABC, abstractmethod
 class Command(ABC):
     EXIT_SUCCESS = 0
 
-    def __init__(self, arguments: list[str]):
-        self.arguments = arguments
+    def __init__(self):
+        pass
 
     @staticmethod
     def build(command: str, arguments: list[str]):
         mapping = {"echo": EchoCommand, "cat": CatCommand, "assign": AssignCommand}
         handler = mapping.get(command, ExternalCommand)
 
-        return handler(arguments)
+        return handler().run(arguments)
 
     @abstractmethod
     def run(self) -> tuple[str, int]:
@@ -30,15 +30,15 @@ class Command(ABC):
 
 
 class EchoCommand(Command):
-    def run(self) -> tuple[str, int]:
-        return " ".join(self.arguments), Command.EXIT_SUCCESS
+    def run(self, arguments: list[str]) -> tuple[str, int]:
+        return " ".join(arguments), Command.EXIT_SUCCESS
 
 
 class CatCommand(Command):
-    def run(self) -> tuple[str, int]:
+    def run(self, arguments: list[str]) -> tuple[str, int]:
         output = ""
         exit_status = Command.EXIT_SUCCESS
-        for file_path in self.arguments:
+        for file_path in arguments:
             if not os.path.exists(file_path):
                 output += f"cat: {file_path}: No such file or directory\n"
                 exit_status = 1
@@ -50,18 +50,18 @@ class CatCommand(Command):
 
 
 class ExternalCommand(Command):
-    def run(self) -> tuple[str, int]:
+    def run(self, arguments: list[str]) -> tuple[str, int]:
         # TODO: Implement.
         return (
-            f"Exucuting external command with arguments {self.arguments}\n",
+            f"Exucuting external command with arguments {arguments}\n",
             Command.EXIT_SUCCESS,
         )
 
 
 class AssignCommand(Command):
-    def run(self) -> tuple[str, int]:
+    def run(self, arguments: list[str]) -> tuple[str, int]:
         # TODO: Implement.
         return (
-            f"Exucuting assign command with arguments {self.arguments}\n",
+            f"Exucuting assign command with arguments {arguments}\n",
             Command.EXIT_SUCCESS,
         )

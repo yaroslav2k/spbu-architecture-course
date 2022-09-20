@@ -9,7 +9,7 @@ class Parser:
         self.__lexical_parser = LexicalParser()
         self.__semantic_parser = SemanticParser(LexicalParser.tokens)
 
-    def parse(self, string):
+    def parse(self, string: str) -> tuple[str, list[str]]:
         specification = self.__semantic_parser.parser.parse(
             string, lexer=self.__lexical_parser.lexer
         )
