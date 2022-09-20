@@ -4,23 +4,29 @@ from abc import ABC, abstractmethod
 
 
 class Command(ABC):
+    """Abstract class that represents a command."""
     EXIT_SUCCESS = 0
 
     def __init__(self):
         pass
 
     @staticmethod
-    def build(command: str, arguments: list[str]):
+    def build(command: str):
         mapping = {"echo": EchoCommand, "cat": CatCommand, "assign": AssignCommand}
         handler = mapping.get(command, ExternalCommand)
 
-        return handler().run(arguments)
+        return handler()
 
     @abstractmethod
-    def run(self) -> tuple[str, int]:
+    def run(self, arguments: list[str]) -> tuple[str, int]:
         """
         Runs the command with given list of arguments.
 
+        Parameters
+        ----------
+        arguments: list[str]
+            arguments of a command
+        
         Returns
         -------
         tuple[str, int]
@@ -30,11 +36,13 @@ class Command(ABC):
 
 
 class EchoCommand(Command):
+    """Class that represents echo command."""
     def run(self, arguments: list[str]) -> tuple[str, int]:
         return " ".join(arguments), Command.EXIT_SUCCESS
 
 
 class CatCommand(Command):
+    """Class that represents cat command."""
     def run(self, arguments: list[str]) -> tuple[str, int]:
         output = ""
         exit_status = Command.EXIT_SUCCESS

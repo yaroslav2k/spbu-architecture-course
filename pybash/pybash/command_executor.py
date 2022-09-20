@@ -8,8 +8,8 @@ class CommandExecutor:
         self._error_stream = error_stream
 
     def execute(self, command: str, arguments: list[str]) -> int:
-        command = Command.build(command, arguments)
-        output, exit_code = command.run()
+        command = Command.build(command)
+        output, exit_code = command.run(arguments)
 
         self._output_stream.write(output)
         if exit_code > 0:
