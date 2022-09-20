@@ -38,7 +38,7 @@ class Command(ABC):
 class EchoCommand(Command):
     """Class that represents echo command."""
     def run(self, arguments: list[str]) -> tuple[str, int]:
-        return " ".join(arguments), Command.EXIT_SUCCESS
+        return " ".join(arguments) + "\n", Command.EXIT_SUCCESS
 
 
 class CatCommand(Command):
