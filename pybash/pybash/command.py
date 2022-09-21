@@ -105,7 +105,8 @@ class WcCommand(Command):
                 + str(sum(words_count))
                 + " "
                 + str(sum(bytes_count))
-                + "total"
+                + " "
+                + "total\n"
             )
 
         return output, exit_status
