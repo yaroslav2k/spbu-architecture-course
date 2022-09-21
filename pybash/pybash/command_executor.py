@@ -1,4 +1,5 @@
 from pybash.command import Command
+from pybash.custom_exceptions import UserExitException
 
 
 class CommandExecutor:
@@ -9,7 +10,11 @@ class CommandExecutor:
 
     def execute(self, command: str, arguments: list[str]) -> int:
         command = Command.build(command)
-        output, exit_code = command.run(arguments)
+
+        try:
+            output, exit_code = command.run(arguments)
+        except UserExitException:
+            raise
 
         self._output_stream.write(output)
         if exit_code > 0:

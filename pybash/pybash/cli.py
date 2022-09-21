@@ -1,4 +1,5 @@
 from pybash.executor import Executor
+from pybash.custom_exceptions import UserExitException
 
 
 class CLI:
@@ -9,10 +10,10 @@ class CLI:
         while True:
             user_input = input(">: ")
 
-            if user_input == "exit":
+            try:
+                self.executor.call(user_input)
+            except UserExitException:
                 break
-
-            self.executor.call(user_input)
 
 
 if __name__ == "__main__":

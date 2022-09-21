@@ -3,6 +3,7 @@ import re
 
 from abc import ABC, abstractmethod
 from pybash.environment import Environment
+from pybash.custom_exceptions import UserExitException
 
 
 environment = Environment()
@@ -24,6 +25,7 @@ class Command(ABC):
             "assign": AssignCommand,
             "wc": WcCommand,
             "pwd": PwdCommand,
+            "exit": ExitCommand,
         }
         handler = mapping.get(command, ExternalCommand)
 
@@ -140,3 +142,10 @@ class AssignCommand(Command):
     def run(self, arguments: list[str]) -> tuple[str, int]:
         environment.set(arguments[0], arguments[1])
         return ("", Command.EXIT_SUCCESS)
+
+
+class ExitCommand(Command):
+    """Class that represents exit command."""
+
+    def run(self, arguments: list[str]):
+        raise UserExitException()
