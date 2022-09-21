@@ -14,7 +14,12 @@ class Command(ABC):
 
     @staticmethod
     def build(command: str):
-        mapping = {"echo": EchoCommand, "cat": CatCommand, "assign": AssignCommand}
+        mapping = {
+            "echo": EchoCommand,
+            "cat": CatCommand,
+            "assign": AssignCommand,
+            "wc": WcCommand,
+        }
         handler = mapping.get(command, ExternalCommand)
 
         return handler()
