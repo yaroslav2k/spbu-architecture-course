@@ -2,6 +2,10 @@ import os.path
 import re
 
 from abc import ABC, abstractmethod
+from pybash.environment import Environment
+
+
+environment = Environment()
 
 
 class Command(ABC):
@@ -19,6 +23,7 @@ class Command(ABC):
             "cat": CatCommand,
             "assign": AssignCommand,
             "wc": WcCommand,
+            "pwd": PwdCommand,
         }
         handler = mapping.get(command, ExternalCommand)
 
@@ -121,10 +126,17 @@ class ExternalCommand(Command):
         )
 
 
+class PwdCommand(Command):
+    """Class that represents pwd command."""
+
+    def run(self, arguments: list[str]) -> tuple[str, str]:
+        cwd = environment.get("CURRENT_WORKING_DIRECTORY") + "\n"
+        return (cwd, Command.EXIT_SUCCESS)
+
+
 class AssignCommand(Command):
+    """Class that represents variable assignment command."""
+
     def run(self, arguments: list[str]) -> tuple[str, int]:
-        # TODO: Implement.
-        return (
-            f"Exucuting assign command with arguments {arguments}\n",
-            Command.EXIT_SUCCESS,
-        )
+        environment.set(arguments[0], arguments[1])
+        return ("", Command.EXIT_SUCCESS)
