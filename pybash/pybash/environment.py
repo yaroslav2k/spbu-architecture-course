@@ -4,36 +4,36 @@ import os
 class Environment(object):
     """Singleton environment."""
 
-    obj = None
+    _instance = None
 
     @classmethod
     def __new__(cls, *args):
-        if cls.obj is None:
-            cls.obj = object.__new__(cls)
-            cls.obj._variables = {"CURRENT_WORKING_DIRECTORY": os.getcwd()}
-        return cls.obj
+        if cls._instance is None:
+            cls._instance = object.__new__(cls)
+            cls._instance._variables = {"CURRENT_WORKING_DIRECTORY": os.getcwd()}
+        return cls._instance
 
-    def set(self, variable: str, value: str) -> None:
+    def set(self, key: str, value: str) -> None:
         """
         Sets an environmental variable.
 
         Parameters
         ----------
-        variable: str
+        key: str
             name of a variable to be set
 
         value: str
             value to set
         """
-        self.obj._variables[variable] = value
+        self._instance._variables[key] = value
 
-    def get(self, variable: str) -> str:
+    def get(self, key: str) -> str:
         """
         Gets an environmental variable.
 
         Parameters
         ----------
-        variable: str
+        key: str
             name of a variable to be returned
 
         Returns
@@ -41,4 +41,4 @@ class Environment(object):
         str:
             value of a variable
         """
-        return self.obj._variables[variable]
+        return self._instance._variables.get(key, "")
