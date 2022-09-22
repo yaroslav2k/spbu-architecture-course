@@ -2,10 +2,9 @@ from ply import lex
 
 
 class LexicalParser:
-    tokens = ("IDENTIFIER", "ASSIGNMENT")
+    tokens = ("ASSIGNMENT", "IDENTIFIER")
 
     t_ignore = " \t\n"
-    t_ASSIGNMENT = r"\S+=\S+"
 
     def __init__(self):
         self.lexer = lex.lex(module=self)
@@ -15,8 +14,14 @@ class LexicalParser:
 
         return list(self.lexer)
 
+    # TODO: add comment.
+    def t_ASSIGNMENT(self, t):
+        r"\S+=\S+"
+
+        return t
+
     def t_IDENTIFIER(self, t):
-        r"\S+"
+        r"[^ \t\n\r\f\v=]+"
         value = t.value
 
         if value[0] == '"' and value[-1] == '"' or value[0] == "'" and value[-1] == "'":
