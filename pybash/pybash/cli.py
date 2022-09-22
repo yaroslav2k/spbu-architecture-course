@@ -1,21 +1,22 @@
 from pybash.executor import Executor
-from pybash.custom_exceptions import UserExitException
+from pybash.custom_exceptions import UserExitException, ParsingFailureException
 
 
 class CLI:
     def __init__(self):
-        self.executor = Executor()
+        self._executor = Executor()
 
     def run(self) -> None:
         while True:
-            user_input = input(">: ")
+            user_input = input("$ ")
 
             try:
-                self.executor.call(user_input)
+                self._executor.call(user_input)
             except UserExitException:
                 break
+            except ParsingFailureException:
+                print("Syntax error")
 
 
 if __name__ == "__main__":
-    cli = CLI()
-    cli.run()
+    CLI().run()

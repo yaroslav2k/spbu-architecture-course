@@ -1,4 +1,5 @@
 from ply import lex
+from pybash.custom_exceptions import ParsingFailureException
 
 
 class LexicalParser:
@@ -7,14 +8,20 @@ class LexicalParser:
     t_ignore = " \t\n"
 
     def __init__(self):
-        self.lexer = lex.lex(module=self)
+        self._lexer = lex.lex(module=self)
 
-    def parse(self, string):
-        self.lexer.input(string)
+    def get_parsing_backend(self):
+        return self._lexer
 
-        return list(self.lexer)
+    def parse(self, string: str):
+        self._lexer.input(string)
 
-    # TODO: add comment.
+        return list(self._lexer)
+
+    # NOTE: This method could be implemented as class variable.
+    # However, to make `ASSIGNMENT` token's priority higher than
+    # `IDENTIFIER` token's priority, it's required to keep it as a
+    # method.
     def t_ASSIGNMENT(self, t):
         r"\S+=\S+"
 
@@ -31,5 +38,4 @@ class LexicalParser:
         return t
 
     def t_error(self, t):
-        print("Illegal character '%s'" % t.value[0])
-        t.lexer.skip(1)
+        raise ParsingFailureException()
