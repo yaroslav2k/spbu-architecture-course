@@ -6,12 +6,12 @@ from pybash.command import Command
 
 class Parser:
     def __init__(self):
-        self.__lexical_parser = LexicalParser()
-        self.__semantic_parser = SemanticParser(LexicalParser.tokens)
+        self._lexical_parser = LexicalParser()
+        self._semantic_parser = SemanticParser(LexicalParser.tokens)
 
     def parse(self, string: str) -> tuple[str, list[str]]:
-        specification = self.__semantic_parser.parser.parse(
-            string, lexer=self.__lexical_parser.lexer
+        specification = self._semantic_parser.parser.parse(
+            string, lexer=self._lexical_parser.lexer
         )
 
         return specification[0], specification[1:]

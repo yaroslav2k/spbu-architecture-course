@@ -13,8 +13,8 @@ class SemanticParser:
     def parse(self, string):
         return self.parser.parse(string)
 
-    def p_term(self, p):
-        "term : TERM"
+    def p_identifier(self, p):
+        "identifier : IDENTIFIER"
         p[0] = [p[1]]
 
     def p_assignment(self, p):
@@ -25,8 +25,8 @@ class SemanticParser:
 
     def p_expression(self, p):
         # fmt: off
-        """expression : expression term
-                      | term
+        """expression : expression identifier
+                      | identifier
                       | assignment"""
         # fmt: on
         if len(p) == 3:

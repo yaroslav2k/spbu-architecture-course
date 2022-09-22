@@ -5,10 +5,10 @@ _tabversion = "3.10"
 
 _lr_method = "LALR"
 
-_lr_signature = "expressionASSIGNMENT TERMterm : TERMassignment : ASSIGNMENTexpression : expression term\n                      | term\n                      | assignment"
+_lr_signature = "expressionASSIGNMENT IDENTIFIERidentifier : IDENTIFIERassignment : ASSIGNMENTexpression : expression identifier\n                      | identifier\n                      | assignment"
 
 _lr_action_items = {
-    "TERM": (
+    "IDENTIFIER": (
         [
             0,
             1,
@@ -73,7 +73,7 @@ _lr_goto_items = {
             1,
         ],
     ),
-    "term": (
+    "identifier": (
         [
             0,
             1,
@@ -102,30 +102,44 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
     ("S' -> expression", "S'", 1, None, None, None),
-    ("term -> TERM", "term", 1, "p_term", "semantic_parser.py", 18),
+    (
+        "identifier -> IDENTIFIER",
+        "identifier",
+        1,
+        "p_identifier",
+        "semantic_parser.py",
+        17,
+    ),
     (
         "assignment -> ASSIGNMENT",
         "assignment",
         1,
         "p_assignment",
         "semantic_parser.py",
-        22,
+        21,
     ),
     (
-        "expression -> expression term",
+        "expression -> expression identifier",
         "expression",
         2,
         "p_expression",
         "semantic_parser.py",
+        27,
+    ),
+    (
+        "expression -> identifier",
+        "expression",
+        1,
+        "p_expression",
+        "semantic_parser.py",
         28,
     ),
-    ("expression -> term", "expression", 1, "p_expression", "semantic_parser.py", 29),
     (
         "expression -> assignment",
         "expression",
         1,
         "p_expression",
         "semantic_parser.py",
-        30,
+        29,
     ),
 ]

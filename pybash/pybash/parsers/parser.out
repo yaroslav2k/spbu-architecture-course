@@ -3,88 +3,88 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> expression
-Rule 1     term -> TERM
+Rule 1     identifier -> IDENTIFIER
 Rule 2     assignment -> ASSIGNMENT
-Rule 3     expression -> expression term
-Rule 4     expression -> term
+Rule 3     expression -> expression identifier
+Rule 4     expression -> identifier
 Rule 5     expression -> assignment
 
 Terminals, with rules where they appear
 
 ASSIGNMENT           : 2
-TERM                 : 1
+IDENTIFIER           : 1
 error                : 
 
 Nonterminals, with rules where they appear
 
 assignment           : 5
 expression           : 3 0
-term                 : 3 4
+identifier           : 3 4
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . expression
-    (3) expression -> . expression term
-    (4) expression -> . term
+    (3) expression -> . expression identifier
+    (4) expression -> . identifier
     (5) expression -> . assignment
-    (1) term -> . TERM
+    (1) identifier -> . IDENTIFIER
     (2) assignment -> . ASSIGNMENT
 
-    TERM            shift and go to state 4
+    IDENTIFIER      shift and go to state 4
     ASSIGNMENT      shift and go to state 5
 
     expression                     shift and go to state 1
-    term                           shift and go to state 2
+    identifier                     shift and go to state 2
     assignment                     shift and go to state 3
 
 state 1
 
     (0) S' -> expression .
-    (3) expression -> expression . term
-    (1) term -> . TERM
+    (3) expression -> expression . identifier
+    (1) identifier -> . IDENTIFIER
 
-    TERM            shift and go to state 4
+    IDENTIFIER      shift and go to state 4
 
-    term                           shift and go to state 6
+    identifier                     shift and go to state 6
 
 state 2
 
-    (4) expression -> term .
+    (4) expression -> identifier .
 
-    TERM            reduce using rule 4 (expression -> term .)
-    $end            reduce using rule 4 (expression -> term .)
+    IDENTIFIER      reduce using rule 4 (expression -> identifier .)
+    $end            reduce using rule 4 (expression -> identifier .)
 
 
 state 3
 
     (5) expression -> assignment .
 
-    TERM            reduce using rule 5 (expression -> assignment .)
+    IDENTIFIER      reduce using rule 5 (expression -> assignment .)
     $end            reduce using rule 5 (expression -> assignment .)
 
 
 state 4
 
-    (1) term -> TERM .
+    (1) identifier -> IDENTIFIER .
 
-    TERM            reduce using rule 1 (term -> TERM .)
-    $end            reduce using rule 1 (term -> TERM .)
+    IDENTIFIER      reduce using rule 1 (identifier -> IDENTIFIER .)
+    $end            reduce using rule 1 (identifier -> IDENTIFIER .)
 
 
 state 5
 
     (2) assignment -> ASSIGNMENT .
 
-    TERM            reduce using rule 2 (assignment -> ASSIGNMENT .)
+    IDENTIFIER      reduce using rule 2 (assignment -> ASSIGNMENT .)
     $end            reduce using rule 2 (assignment -> ASSIGNMENT .)
 
 
 state 6
 
-    (3) expression -> expression term .
+    (3) expression -> expression identifier .
 
-    TERM            reduce using rule 3 (expression -> expression term .)
-    $end            reduce using rule 3 (expression -> expression term .)
+    IDENTIFIER      reduce using rule 3 (expression -> expression identifier .)
+    $end            reduce using rule 3 (expression -> expression identifier .)
 
