@@ -11,10 +11,7 @@ class CommandExecutor:
     def execute(self, command: str, arguments: list[str]) -> int:
         command = Command.build(command)
 
-        try:
-            output, exit_code = command.run(arguments)
-        except UserExitException:
-            raise
+        output, exit_code = command.run(arguments)
 
         self._output_stream.write(output)
         if exit_code > 0:
