@@ -15,8 +15,43 @@ def test_regular_command_with_arguments():
     assert perform(value) == expected_output
 
 
+def test_regular_command_with_arguments_with_leading_spaces():
+    value = "           cat abc.txt data.json"
+    expected_output = ParsingResult("cat", ["abc.txt", "data.json"])
+
+    assert perform(value) == expected_output
+
+
+def test_regular_command_with_arguments_with_trailing_spaces():
+    value = "cat abc.txt data.json  "
+    expected_output = ParsingResult("cat", ["abc.txt", "data.json"])
+
+    assert perform(value) == expected_output
+
+
+def test_regular_command_with_arguments_with_spaces_between_arguments():
+    value = "cat abc.txt    data.json"
+    expected_output = ParsingResult("cat", ["abc.txt", "data.json"])
+
+    assert perform(value) == expected_output
+
+
 def test_regular_command_without_arguments():
     value = "cat"
+    expected_output = ParsingResult("cat", [])
+
+    assert perform(value) == expected_output
+
+
+def test_regular_command_without_arguments_with_leading_spaces():
+    value = "   cat"
+    expected_output = ParsingResult("cat", [])
+
+    assert perform(value) == expected_output
+
+
+def test_regular_command_without_arguments_with_trailing_spaces():
+    value = "cat      "
     expected_output = ParsingResult("cat", [])
 
     assert perform(value) == expected_output
