@@ -14,6 +14,10 @@ class SemanticParser:
     def parse(self, string):
         return self.parser.parse(string)
 
+    def p_empty(self, p):
+        "empty :"
+        pass
+
     def p_identifier(self, p):
         "identifier : IDENTIFIER"
         p[0] = [p[1]]
@@ -26,7 +30,8 @@ class SemanticParser:
 
     def p_expression(self, p):
         # fmt: off
-        """expression : expression identifier
+        """expression : empty
+                      | expression identifier
                       | identifier
                       | assignment"""
         # fmt: on

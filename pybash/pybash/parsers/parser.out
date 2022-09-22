@@ -3,88 +3,110 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> expression
-Rule 1     identifier -> IDENTIFIER
-Rule 2     assignment -> ASSIGNMENT
-Rule 3     expression -> expression identifier
-Rule 4     expression -> identifier
-Rule 5     expression -> assignment
+Rule 1     empty -> <empty>
+Rule 2     identifier -> IDENTIFIER
+Rule 3     assignment -> ASSIGNMENT
+Rule 4     expression -> empty
+Rule 5     expression -> expression identifier
+Rule 6     expression -> identifier
+Rule 7     expression -> assignment
 
 Terminals, with rules where they appear
 
-ASSIGNMENT           : 2
-IDENTIFIER           : 1
+ASSIGNMENT           : 3
+IDENTIFIER           : 2
 error                : 
 
 Nonterminals, with rules where they appear
 
-assignment           : 5
-expression           : 3 0
-identifier           : 3 4
+assignment           : 7
+empty                : 4
+expression           : 5 0
+identifier           : 5 6
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . expression
-    (3) expression -> . expression identifier
-    (4) expression -> . identifier
-    (5) expression -> . assignment
-    (1) identifier -> . IDENTIFIER
-    (2) assignment -> . ASSIGNMENT
+    (4) expression -> . empty
+    (5) expression -> . expression identifier
+    (6) expression -> . identifier
+    (7) expression -> . assignment
+    (1) empty -> .
+    (2) identifier -> . IDENTIFIER
+    (3) assignment -> . ASSIGNMENT
 
-    IDENTIFIER      shift and go to state 4
-    ASSIGNMENT      shift and go to state 5
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+    $end            reduce using rule 1 (empty -> .)
+    IDENTIFIER      shift and go to state 5
+    ASSIGNMENT      shift and go to state 6
+
+  ! IDENTIFIER      [ reduce using rule 1 (empty -> .) ]
 
     expression                     shift and go to state 1
-    identifier                     shift and go to state 2
-    assignment                     shift and go to state 3
+    empty                          shift and go to state 2
+    identifier                     shift and go to state 3
+    assignment                     shift and go to state 4
 
 state 1
 
     (0) S' -> expression .
-    (3) expression -> expression . identifier
-    (1) identifier -> . IDENTIFIER
+    (5) expression -> expression . identifier
+    (2) identifier -> . IDENTIFIER
 
-    IDENTIFIER      shift and go to state 4
+    IDENTIFIER      shift and go to state 5
 
-    identifier                     shift and go to state 6
+    identifier                     shift and go to state 7
 
 state 2
 
-    (4) expression -> identifier .
+    (4) expression -> empty .
 
-    IDENTIFIER      reduce using rule 4 (expression -> identifier .)
-    $end            reduce using rule 4 (expression -> identifier .)
+    IDENTIFIER      reduce using rule 4 (expression -> empty .)
+    $end            reduce using rule 4 (expression -> empty .)
 
 
 state 3
 
-    (5) expression -> assignment .
+    (6) expression -> identifier .
 
-    IDENTIFIER      reduce using rule 5 (expression -> assignment .)
-    $end            reduce using rule 5 (expression -> assignment .)
+    IDENTIFIER      reduce using rule 6 (expression -> identifier .)
+    $end            reduce using rule 6 (expression -> identifier .)
 
 
 state 4
 
-    (1) identifier -> IDENTIFIER .
+    (7) expression -> assignment .
 
-    IDENTIFIER      reduce using rule 1 (identifier -> IDENTIFIER .)
-    $end            reduce using rule 1 (identifier -> IDENTIFIER .)
+    IDENTIFIER      reduce using rule 7 (expression -> assignment .)
+    $end            reduce using rule 7 (expression -> assignment .)
 
 
 state 5
 
-    (2) assignment -> ASSIGNMENT .
+    (2) identifier -> IDENTIFIER .
 
-    IDENTIFIER      reduce using rule 2 (assignment -> ASSIGNMENT .)
-    $end            reduce using rule 2 (assignment -> ASSIGNMENT .)
+    IDENTIFIER      reduce using rule 2 (identifier -> IDENTIFIER .)
+    $end            reduce using rule 2 (identifier -> IDENTIFIER .)
 
 
 state 6
 
-    (3) expression -> expression identifier .
+    (3) assignment -> ASSIGNMENT .
 
-    IDENTIFIER      reduce using rule 3 (expression -> expression identifier .)
-    $end            reduce using rule 3 (expression -> expression identifier .)
+    IDENTIFIER      reduce using rule 3 (assignment -> ASSIGNMENT .)
+    $end            reduce using rule 3 (assignment -> ASSIGNMENT .)
 
+
+state 7
+
+    (5) expression -> expression identifier .
+
+    IDENTIFIER      reduce using rule 5 (expression -> expression identifier .)
+    $end            reduce using rule 5 (expression -> expression identifier .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for IDENTIFIER in state 0 resolved as shift

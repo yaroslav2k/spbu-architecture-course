@@ -1,17 +1,18 @@
 import sys
 
-from pybash.parser import Parser
+from pybash.parser import Parser, ParsingResult
 from pybash.command_executor import CommandExecutor
 from pybash.custom_exceptions import UserExitException
 
 
 class Executor:
     def call(self, string):
-        command, arguments = Parser().parse(string)
+        if (parsing_result := Parser().parse(string)) is None:
+            return
 
         try:
             CommandExecutor(sys.stdin, sys.stdout, sys.stderr).execute(
-                command, arguments
+                parsing_result.command, parsing_result.arguments
             )
         except UserExitException:
             raise

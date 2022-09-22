@@ -5,7 +5,7 @@ _tabversion = "3.10"
 
 _lr_method = "LALR"
 
-_lr_signature = "expressionASSIGNMENT IDENTIFIERidentifier : IDENTIFIERassignment : ASSIGNMENTexpression : expression identifier\n                      | identifier\n                      | assignment"
+_lr_signature = "expressionASSIGNMENT IDENTIFIERempty :identifier : IDENTIFIERassignment : ASSIGNMENTexpression : empty\n                      | expression identifier\n                      | identifier\n                      | assignment"
 
 _lr_action_items = {
     "IDENTIFIER": (
@@ -17,15 +17,39 @@ _lr_action_items = {
             4,
             5,
             6,
+            7,
         ],
         [
-            4,
-            4,
+            5,
+            5,
             -4,
-            -5,
-            -1,
+            -6,
+            -7,
             -2,
             -3,
+            -5,
+        ],
+    ),
+    "$end": (
+        [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+        ],
+        [
+            -1,
+            0,
+            -4,
+            -6,
+            -7,
+            -2,
+            -3,
+            -5,
         ],
     ),
     "ASSIGNMENT": (
@@ -33,25 +57,7 @@ _lr_action_items = {
             0,
         ],
         [
-            5,
-        ],
-    ),
-    "$end": (
-        [
-            1,
-            2,
-            3,
-            4,
-            5,
             6,
-        ],
-        [
-            0,
-            -4,
-            -5,
-            -1,
-            -2,
-            -3,
         ],
     ),
 }
@@ -73,14 +79,22 @@ _lr_goto_items = {
             1,
         ],
     ),
+    "empty": (
+        [
+            0,
+        ],
+        [
+            2,
+        ],
+    ),
     "identifier": (
         [
             0,
             1,
         ],
         [
-            2,
-            6,
+            3,
+            7,
         ],
     ),
     "assignment": (
@@ -88,7 +102,7 @@ _lr_goto_items = {
             0,
         ],
         [
-            3,
+            4,
         ],
     ),
 }
@@ -102,13 +116,14 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
     ("S' -> expression", "S'", 1, None, None, None),
+    ("empty -> <empty>", "empty", 0, "p_empty", "semantic_parser.py", 18),
     (
         "identifier -> IDENTIFIER",
         "identifier",
         1,
         "p_identifier",
         "semantic_parser.py",
-        17,
+        22,
     ),
     (
         "assignment -> ASSIGNMENT",
@@ -116,15 +131,16 @@ _lr_productions = [
         1,
         "p_assignment",
         "semantic_parser.py",
-        21,
+        26,
     ),
+    ("expression -> empty", "expression", 1, "p_expression", "semantic_parser.py", 32),
     (
         "expression -> expression identifier",
         "expression",
         2,
         "p_expression",
         "semantic_parser.py",
-        27,
+        33,
     ),
     (
         "expression -> identifier",
@@ -132,7 +148,7 @@ _lr_productions = [
         1,
         "p_expression",
         "semantic_parser.py",
-        28,
+        34,
     ),
     (
         "expression -> assignment",
@@ -140,6 +156,6 @@ _lr_productions = [
         1,
         "p_expression",
         "semantic_parser.py",
-        29,
+        35,
     ),
 ]
