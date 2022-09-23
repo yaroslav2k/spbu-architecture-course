@@ -12,6 +12,7 @@ expects = "^0.9.0"
 Faker = "^14.2.0"
 ply = "^3.11"
 pytest = "^7.1.3"
+pytest-mock = "^3.8.2"
 
 
 [build-system]

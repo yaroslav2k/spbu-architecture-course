@@ -1,5 +1,8 @@
 import os.path
 import re
+import io
+
+from dataclasses import dataclass
 
 from abc import ABC, abstractmethod
 from pybash.environment import Environment
@@ -7,6 +10,12 @@ from pybash.custom_exceptions import UserExitException
 
 
 environment = Environment()
+
+
+@dataclass
+class CommandStreams:
+    output: io.TextIOWrapper
+    error: io.TextIOWrapper
 
 
 class Command(ABC):
@@ -27,12 +36,11 @@ class Command(ABC):
             "pwd": PwdCommand,
             "exit": ExitCommand,
         }
-        handler = mapping.get(command, ExternalCommand)
 
-        return handler()
+        return mapping.get(command, ExternalCommand)()
 
     @abstractmethod
-    def run(self, arguments: list[str]) -> tuple[str, int]:
+    def run(self, arguments: list[str], streams: CommandStreams) -> int:
         """
         Runs the command with given list of arguments.
 
@@ -41,10 +49,13 @@ class Command(ABC):
         arguments: list[str]
             arguments of a command
 
+        streams: CommandStreams
+            streams
+
         Returns
         -------
-        tuple[str, int]
-            command output and exit status
+        int
+            command exit code
         """
         pass
 
@@ -52,36 +63,38 @@ class Command(ABC):
 class EchoCommand(Command):
     """Class that represents echo command."""
 
-    def run(self, arguments: list[str]) -> tuple[str, int]:
-        return " ".join(arguments) + "\n", Command.EXIT_SUCCESS
+    def run(self, arguments: list[str], streams: CommandStreams) -> int:
+        streams.output.write(" ".join(arguments) + "\n")
+
+        return Command.EXIT_SUCCESS
 
 
 class CatCommand(Command):
     """Class that represents cat command."""
 
-    def run(self, arguments: list[str]) -> tuple[str, int]:
-        output = ""
-        exit_status = Command.EXIT_SUCCESS
+    def run(self, arguments: list[str], streams: CommandStreams) -> int:
+        exit_code = Command.EXIT_SUCCESS
+
         for file_path in arguments:
             if not os.path.exists(file_path):
-                output += f"cat: {file_path}: No such file or directory\n"
-                exit_status = 1
+                streams.output.write(f"cat: {file_path}: No such file or directory\n")
+                exit_code = 1
             else:
                 with open(file_path) as f:
-                    output += f.read()
+                    streams.output.write(f.read())
 
-        return output, exit_status
+        return exit_code
 
 
 class WcCommand(Command):
     """Class that represents wc command."""
 
-    def run(self, arguments: list[str]) -> tuple[str, int]:
+    def run(self, arguments: list[str], streams: CommandStreams) -> int:
         output = ""
-        newlines_count = []
-        words_count = []
-        bytes_count = []
-        exit_status = Command.EXIT_SUCCESS
+        newlines_count, words_count, bytes_count = [], [], []
+
+        exit_code = Command.EXIT_SUCCESS
+
         for file_path in arguments:
             if os.path.exists(file_path):
                 file_content = None
@@ -91,7 +104,7 @@ class WcCommand(Command):
                 file_content = " ".join(file_content.splitlines())
                 words_count.append(len(re.split("\s+", file_content)))
                 bytes_count.append(os.path.getsize(file_path))
-                output += (
+                streams.output.write(
                     str(newlines_count[-1])
                     + "  "
                     + str(words_count[-1])
@@ -102,11 +115,11 @@ class WcCommand(Command):
                     + "\n"
                 )
             else:
-                output += f"wc: {file_path}: No such file or directory\n"
-                exit_status = 1
+                streams.output.write(f"wc: {file_path}: No such file or directory\n")
+                exit_code = 1
 
         if len(arguments) >= 2:
-            output += (
+            streams.output.write(
                 str(sum(newlines_count))
                 + " "
                 + str(sum(words_count))
@@ -116,36 +129,40 @@ class WcCommand(Command):
                 + "total\n"
             )
 
-        return output, exit_status
+        return exit_code
 
 
 class ExternalCommand(Command):
-    def run(self, arguments: list[str]) -> tuple[str, int]:
+    def run(self, arguments: list[str], streams: CommandStreams) -> int:
         # TODO: Implement.
-        return (
+
+        streams.output.write(
             f"Exucuting external command with arguments {arguments}\n",
-            Command.EXIT_SUCCESS,
         )
+
+        return Command.EXIT_SUCCESS
 
 
 class PwdCommand(Command):
     """Class that represents pwd command."""
 
-    def run(self, arguments: list[str]) -> tuple[str, str]:
-        cwd = environment.get("CURRENT_WORKING_DIRECTORY") + "\n"
-        return (cwd, Command.EXIT_SUCCESS)
+    def run(self, arguments: list[str], streams: CommandStreams) -> int:
+        streams.output.write(environment.get("CURRENT_WORKING_DIRECTORY") + "\n")
+
+        return EXIT_SUCCESS
 
 
 class AssignCommand(Command):
     """Class that represents variable assignment command."""
 
-    def run(self, arguments: list[str]) -> tuple[str, int]:
+    def run(self, arguments: list[str], streams: CommandStreams) -> int:
         environment.set(arguments[0], arguments[1])
-        return ("", Command.EXIT_SUCCESS)
+
+        return Command.EXIT_SUCCESS
 
 
 class ExitCommand(Command):
     """Class that represents exit command."""
 
-    def run(self, arguments: list[str]):
+    def run(self, arguments: list[str], streams: CommandStreams):
         raise UserExitException()
