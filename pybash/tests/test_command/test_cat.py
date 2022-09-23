@@ -7,7 +7,7 @@ from pybash.command import CommandStreams, CatCommand
 
 @pytest.fixture
 def command_streams():
-    return CommandStreams(sys.stdout, sys.stderr)
+    return CommandStreams(sys.stdin, sys.stdout, sys.stderr)
 
 
 def test_single_existing_file(mocker, text_file, command_streams):

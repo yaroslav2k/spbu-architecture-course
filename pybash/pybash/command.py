@@ -14,6 +14,7 @@ environment = Environment()
 
 @dataclass
 class CommandStreams:
+    input: io.TextIOWrapper
     output: io.TextIOWrapper
     error: io.TextIOWrapper
 

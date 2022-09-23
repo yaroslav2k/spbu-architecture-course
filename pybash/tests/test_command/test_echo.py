@@ -9,7 +9,7 @@ command = EchoCommand()
 
 @pytest.fixture
 def command_streams():
-    return CommandStreams(sys.stdout, sys.stderr)
+    return CommandStreams(sys.stdin, sys.stdout, sys.stderr)
 
 
 def test_single_parameter(mocker, command_streams):

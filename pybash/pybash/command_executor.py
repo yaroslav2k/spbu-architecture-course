@@ -10,7 +10,9 @@ class CommandExecutor:
 
     def execute(self, command: str, arguments: list[str]) -> int:
         command = Command.build(command)
-        command_streams = CommandStreams(self._output_stream, self._error_stream)
+        command_streams = CommandStreams(
+            self._input_stream, self._output_stream, self._error_stream
+        )
 
         exit_code = command.run(arguments, command_streams)
 
