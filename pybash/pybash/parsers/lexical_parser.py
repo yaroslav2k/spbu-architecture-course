@@ -34,7 +34,7 @@ class LexicalParser:
         return t
 
     def t_QUOTES_ENCLOSED_IDENTIFIER(self, t):
-        r"\'[^\t\n\r\f\v=]+\'|\"[^\t\n\r\f\v=]+\" "
+        r"\'[^\t\n\r\f\v=]*\'|\"[^\t\n\r\f\v=]*\" "
 
         value = t.value
 

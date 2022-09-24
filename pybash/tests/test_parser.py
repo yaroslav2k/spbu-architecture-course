@@ -103,10 +103,23 @@ def test_regular_path_with_empty_enclosed_in_quotes_argument():
     value = "executable ''"
     expected_output = ParsingResult("executable", [""])
 
+    assert perform(value) == expected_output
+
 
 def test_regular_path_with_empty_enclosed_in_quotes_argument_and_regular_one():
     value = "executable '' abc"
     expected_output = ParsingResult("executable", ["", "abc"])
+
+    assert perform(value) == expected_output
+
+
+def test_nested_quotes():
+    value = "python -c 'import os; print(os.environ.get('PATH'))'"
+    expected_output = ParsingResult(
+        "python", ["-c", "import os; print(os.environ.get('PATH'))"]
+    )
+
+    assert perform(value) == expected_output
 
 
 def test_assignment():
@@ -130,7 +143,7 @@ def test_empty_input():
 
 
 def test_blank_input():
-    value = ""
+    value = "   "
 
     assert perform(value) is None
 
