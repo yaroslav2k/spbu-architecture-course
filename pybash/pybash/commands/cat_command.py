@@ -14,6 +14,9 @@ class CatCommand(BaseCommand):
             if not os.path.exists(file_path):
                 streams.output.write(f"cat: {file_path}: No such file or directory\n")
                 exit_code = 1
+            elif os.path.isdir(file_path):
+                streams.output.write(f"cat: {file_path}: Is a directory\n")
+                exit_code = 1
             else:
                 with open(file_path) as f:
                     streams.output.write(f.read())
