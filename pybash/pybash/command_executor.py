@@ -1,5 +1,5 @@
-from pybash.command import Command, CommandStreams
-from pybash.custom_exceptions import UserExitException
+from pybash.command import Command
+from pybash.commands.command_streams import CommandStreams
 
 
 class CommandExecutor:

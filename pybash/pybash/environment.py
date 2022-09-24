@@ -10,7 +10,7 @@ class Environment(object):
     def __new__(cls, *args):
         if cls._instance is None:
             cls._instance = object.__new__(cls)
-            cls._instance._variables = {"CURRENT_WORKING_DIRECTORY": os.getcwd()}
+            cls._instance._variables = {"PWD": os.getcwd()}
         return cls._instance
 
     def set(self, key: str, value: str) -> None:
