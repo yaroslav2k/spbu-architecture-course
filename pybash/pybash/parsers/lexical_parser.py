@@ -1,5 +1,6 @@
 from ply import lex
 from pybash.custom_exceptions import ParsingFailureException
+from pybash.environment import Environment
 
 
 class LexicalParser:
@@ -44,5 +45,7 @@ class LexicalParser:
         return t
 
     def t_error(self, t):
-        # print(f'Illegal character {t.value[0]!r}')
-        raise ParsingFailureException()
+        if Environment().get("PYBASH_DEBUG") == "true":
+            print(f"Illegal character {t.value[0]!r}")
+        else:
+            raise ParsingFailureException()

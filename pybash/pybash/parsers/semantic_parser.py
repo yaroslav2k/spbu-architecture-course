@@ -1,5 +1,6 @@
 from pybash.command import Command
 from pybash.custom_exceptions import ParsingFailureException
+from pybash.environment import Environment
 
 import ply.yacc as yacc
 
@@ -47,5 +48,7 @@ class SemanticParser:
             p[0] = p[1]
 
     def p_error(self, p):
-        # print(f'Syntax error at {p.value!r}')
-        raise ParsingFailureException()
+        if Environment().get("PYBASH_DEBUG") == "true":
+            print(f"Syntax error at {p.value!r}")
+        else:
+            raise ParsingFailureException()
