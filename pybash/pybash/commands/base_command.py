@@ -11,19 +11,6 @@ class BaseCommand(ABC):
     def __init__(self):
         pass
 
-    @staticmethod
-    def build(command: str):
-        mapping = {
-            "echo": EchoCommand,
-            "cat": CatCommand,
-            "assign": AssignCommand,
-            "wc": WcCommand,
-            "pwd": PwdCommand,
-            "exit": ExitCommand,
-        }
-
-        return mapping.get(command, ExternalCommand)()
-
     @abstractmethod
     def run(self, arguments: list[str], streams: CommandStreams) -> int:
         """
@@ -43,3 +30,6 @@ class BaseCommand(ABC):
             command exit code
         """
         pass
+
+    def is_external(self):
+        return False

@@ -22,6 +22,10 @@ class SemanticParser:
         "identifier : IDENTIFIER"
         p[0] = [p[1]]
 
+    def p_quotes_enclosed_identifier(self, p):
+        "quotes_enclosed_identifier : QUOTES_ENCLOSED_IDENTIFIER"
+        p[0] = [p[1]]
+
     def p_assignment(self, p):
         "assignment : ASSIGNMENT"
 
@@ -32,7 +36,9 @@ class SemanticParser:
         # fmt: off
         """expression : empty
                       | expression identifier
+                      | expression quotes_enclosed_identifier
                       | identifier
+                      | quotes_enclosed_identifier
                       | assignment"""
         # fmt: on
         if len(p) == 3:
@@ -41,4 +47,5 @@ class SemanticParser:
             p[0] = p[1]
 
     def p_error(self, p):
+        # print(f'Syntax error at {p.value!r}')
         raise ParsingFailureException()

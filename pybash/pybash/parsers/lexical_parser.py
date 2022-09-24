@@ -3,7 +3,7 @@ from pybash.custom_exceptions import ParsingFailureException
 
 
 class LexicalParser:
-    tokens = ("ASSIGNMENT", "IDENTIFIER")
+    tokens = ("ASSIGNMENT", "IDENTIFIER", "QUOTES_ENCLOSED_IDENTIFIER")
 
     t_ignore = " \t\n"
 
@@ -28,7 +28,13 @@ class LexicalParser:
         return t
 
     def t_IDENTIFIER(self, t):
-        r"[^ \t\n\r\f\v=]+"
+        r"[^ \t\n\r\f\v=\'\"]+"
+
+        return t
+
+    def t_QUOTES_ENCLOSED_IDENTIFIER(self, t):
+        r"\'[^\t\n\r\f\v=]+\'|\"[^\t\n\r\f\v=]+\" "
+
         value = t.value
 
         if value[0] == '"' and value[-1] == '"' or value[0] == "'" and value[-1] == "'":
@@ -38,4 +44,5 @@ class LexicalParser:
         return t
 
     def t_error(self, t):
+        # print(f'Illegal character {t.value[0]!r}')
         raise ParsingFailureException()

@@ -1,13 +1,22 @@
+import subprocess
+import sys
+
 from pybash.commands.base_command import BaseCommand
 from pybash.commands.command_streams import CommandStreams
+from pybash.environment import Environment
 
 
 class ExternalCommand(BaseCommand):
     def run(self, arguments: list[str], streams: CommandStreams) -> int:
-        # TODO: Implement.
-
-        streams.output.write(
-            f"Exucuting external command with arguments {arguments}\n",
+        completed_process = subprocess.run(
+            arguments,
+            stdin=streams.input,
+            stdout=streams.output,
+            stderr=streams.error,
+            env=Environment(),
         )
 
-        return BaseCommand.EXIT_SUCCESS
+        return completed_process.returncode
+
+    def is_external(self):
+        return True

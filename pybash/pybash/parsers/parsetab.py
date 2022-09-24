@@ -5,7 +5,7 @@ _tabversion = "3.10"
 
 _lr_method = "LALR"
 
-_lr_signature = "expressionASSIGNMENT IDENTIFIERempty :identifier : IDENTIFIERassignment : ASSIGNMENTexpression : empty\n                      | expression identifier\n                      | identifier\n                      | assignment"
+_lr_signature = "expressionASSIGNMENT IDENTIFIER QUOTES_ENCLOSED_IDENTIFIERempty :identifier : IDENTIFIERquotes_enclosed_identifier : QUOTES_ENCLOSED_IDENTIFIERassignment : ASSIGNMENTexpression : empty\n                      | expression identifier\n                      | expression quotes_enclosed_identifier\n                      | identifier\n                      | quotes_enclosed_identifier\n                      | assignment"
 
 _lr_action_items = {
     "IDENTIFIER": (
@@ -18,16 +18,50 @@ _lr_action_items = {
             5,
             6,
             7,
+            8,
+            9,
+            10,
         ],
         [
-            5,
-            5,
+            6,
+            6,
+            -5,
+            -8,
+            -9,
+            -10,
+            -2,
+            -3,
             -4,
             -6,
             -7,
+        ],
+    ),
+    "QUOTES_ENCLOSED_IDENTIFIER": (
+        [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+        ],
+        [
+            7,
+            7,
+            -5,
+            -8,
+            -9,
+            -10,
             -2,
             -3,
-            -5,
+            -4,
+            -6,
+            -7,
         ],
     ),
     "$end": (
@@ -40,16 +74,22 @@ _lr_action_items = {
             5,
             6,
             7,
+            8,
+            9,
+            10,
         ],
         [
             -1,
             0,
+            -5,
+            -8,
+            -9,
+            -10,
+            -2,
+            -3,
             -4,
             -6,
             -7,
-            -2,
-            -3,
-            -5,
         ],
     ),
     "ASSIGNMENT": (
@@ -57,7 +97,7 @@ _lr_action_items = {
             0,
         ],
         [
-            6,
+            8,
         ],
     ),
 }
@@ -94,7 +134,17 @@ _lr_goto_items = {
         ],
         [
             3,
-            7,
+            9,
+        ],
+    ),
+    "quotes_enclosed_identifier": (
+        [
+            0,
+            1,
+        ],
+        [
+            4,
+            10,
         ],
     ),
     "assignment": (
@@ -102,7 +152,7 @@ _lr_goto_items = {
             0,
         ],
         [
-            4,
+            5,
         ],
     ),
 }
@@ -126,21 +176,37 @@ _lr_productions = [
         22,
     ),
     (
+        "quotes_enclosed_identifier -> QUOTES_ENCLOSED_IDENTIFIER",
+        "quotes_enclosed_identifier",
+        1,
+        "p_quotes_enclosed_identifier",
+        "semantic_parser.py",
+        26,
+    ),
+    (
         "assignment -> ASSIGNMENT",
         "assignment",
         1,
         "p_assignment",
         "semantic_parser.py",
-        26,
+        30,
     ),
-    ("expression -> empty", "expression", 1, "p_expression", "semantic_parser.py", 32),
+    ("expression -> empty", "expression", 1, "p_expression", "semantic_parser.py", 36),
     (
         "expression -> expression identifier",
         "expression",
         2,
         "p_expression",
         "semantic_parser.py",
-        33,
+        37,
+    ),
+    (
+        "expression -> expression quotes_enclosed_identifier",
+        "expression",
+        2,
+        "p_expression",
+        "semantic_parser.py",
+        38,
     ),
     (
         "expression -> identifier",
@@ -148,7 +214,15 @@ _lr_productions = [
         1,
         "p_expression",
         "semantic_parser.py",
-        34,
+        39,
+    ),
+    (
+        "expression -> quotes_enclosed_identifier",
+        "expression",
+        1,
+        "p_expression",
+        "semantic_parser.py",
+        40,
     ),
     (
         "expression -> assignment",
@@ -156,6 +230,6 @@ _lr_productions = [
         1,
         "p_expression",
         "semantic_parser.py",
-        35,
+        41,
     ),
 ]
