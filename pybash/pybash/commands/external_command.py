@@ -13,7 +13,7 @@ class ExternalCommand(BaseCommand):
             stdin=streams.input,
             stdout=streams.output,
             stderr=streams.error,
-            env=Environment(),
+            env=Environment.copy(),
         )
 
         return completed_process.returncode

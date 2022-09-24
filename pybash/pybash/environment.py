@@ -10,16 +10,15 @@ class Environment(object):
     def __new__(cls, *args):
         if cls._instance is None:
             cls._instance = object.__new__(cls)
-            cls._instance._variables = {
-                "PWD": os.getcwd(),
-                "PATH": os.environ.get("PATH"),
-            }
+            cls._instance._variables = dict(os.environ)
         return cls._instance
 
-    # @classmethod
-    # def copy(cls):
+    @classmethod
+    def copy(cls):
+        instance = object.__new__(cls)
+        instance._variables = dict(cls._instance._variables)
 
-    #     return instance
+        return instance
 
     def set(self, key: str, value: str) -> None:
         """
@@ -51,5 +50,6 @@ class Environment(object):
         """
         return self._instance._variables.get(key, "")
 
+    # TODO: delegate
     def items(self, *args, **kwargs):
         return iter(self._variables.items(*args, **kwargs))
