@@ -20,12 +20,15 @@ class SemanticParser:
         pass
 
     def p_identifier(self, p):
-        "identifier : IDENTIFIER"
+        # fmt: off
+        """identifier : IDENTIFIER
+                      | QUOTES_ENCLOSED_IDENTIFIER"""
+        # fmt: on
         p[0] = [p[1]]
 
-    def p_quotes_enclosed_identifier(self, p):
-        "quotes_enclosed_identifier : QUOTES_ENCLOSED_IDENTIFIER"
-        p[0] = [p[1]]
+    # def p_quotes_enclosed_identifier(self, p):
+    #     "quotes_enclosed_identifier : QUOTES_ENCLOSED_IDENTIFIER"
+    #     p[0] = [p[1]]
 
     def p_assignment(self, p):
         "assignment : ASSIGNMENT"
@@ -36,10 +39,8 @@ class SemanticParser:
     def p_expression(self, p):
         # fmt: off
         """expression : empty
-                      | expression identifier
-                      | expression quotes_enclosed_identifier
                       | identifier
-                      | quotes_enclosed_identifier
+                      | expression identifier
                       | assignment"""
         # fmt: on
         if len(p) == 3:

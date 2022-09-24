@@ -8,17 +8,26 @@ class Environment(object):
 
     @classmethod
     def __new__(cls, *args):
-        if cls._instance is None:
-            cls._instance = object.__new__(cls)
-            cls._instance._variables = dict(os.environ)
+        cls.setup_instance()
+
         return cls._instance
 
     @classmethod
     def copy(cls):
+        cls.setup_instance()
+
         instance = object.__new__(cls)
         instance._variables = dict(cls._instance._variables)
 
         return instance
+
+    @classmethod
+    def setup_instance(cls):
+        if cls._instance is not None:
+            return
+
+        cls._instance = object.__new__(cls)
+        cls._instance._variables = dict(os.environ)
 
     def set(self, key: str, value: str) -> None:
         """

@@ -1,5 +1,9 @@
 from pybash.executor import Executor
-from pybash.custom_exceptions import UserExitException, ParsingFailureException
+from pybash.custom_exceptions import (
+    UserExitException,
+    ParsingFailureException,
+    UnknownCommandException,
+)
 
 
 class CLI:
@@ -16,6 +20,8 @@ class CLI:
                 break
             except ParsingFailureException:
                 print("Syntax error")
+            except UnknownCommandException as e:
+                print(f"{e.args[0]}: command not found")
 
 
 if __name__ == "__main__":

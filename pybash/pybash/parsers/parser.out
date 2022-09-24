@@ -45,15 +45,10 @@ state 0
     (3) quotes_enclosed_identifier -> . QUOTES_ENCLOSED_IDENTIFIER
     (4) assignment -> . ASSIGNMENT
 
-  ! shift/reduce conflict for IDENTIFIER resolved as shift
-  ! shift/reduce conflict for QUOTES_ENCLOSED_IDENTIFIER resolved as shift
     $end            reduce using rule 1 (empty -> .)
     IDENTIFIER      shift and go to state 6
     QUOTES_ENCLOSED_IDENTIFIER shift and go to state 7
     ASSIGNMENT      shift and go to state 8
-
-  ! IDENTIFIER      [ reduce using rule 1 (empty -> .) ]
-  ! QUOTES_ENCLOSED_IDENTIFIER [ reduce using rule 1 (empty -> .) ]
 
     expression                     shift and go to state 1
     empty                          shift and go to state 2
@@ -154,9 +149,3 @@ state 10
     IDENTIFIER      reduce using rule 7 (expression -> expression quotes_enclosed_identifier .)
     QUOTES_ENCLOSED_IDENTIFIER reduce using rule 7 (expression -> expression quotes_enclosed_identifier .)
     $end            reduce using rule 7 (expression -> expression quotes_enclosed_identifier .)
-
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for IDENTIFIER in state 0 resolved as shift
-WARNING: shift/reduce conflict for QUOTES_ENCLOSED_IDENTIFIER in state 0 resolved as shift
