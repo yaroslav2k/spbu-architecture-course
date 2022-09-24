@@ -1,3 +1,5 @@
+import os
+import re
 from pybash.commands.base_command import BaseCommand
 from pybash.commands.command_streams import CommandStreams
 
@@ -18,11 +20,13 @@ class WcCommand(BaseCommand):
                     file_content = f.read()
                 newlines_count.append(file_content.count("\n"))
                 file_content = " ".join(file_content.splitlines())
-                words_count.append(len(re.split("\s+", file_content)))
+                words_count.append(len(re.split(r"\s+", file_content)))
                 bytes_count.append(os.path.getsize(file_path))
+                if bytes_count[-1] == 0:
+                    words_count[-1] = 0
                 streams.output.write(
                     str(newlines_count[-1])
-                    + "  "
+                    + " "
                     + str(words_count[-1])
                     + " "
                     + str(bytes_count[-1])
