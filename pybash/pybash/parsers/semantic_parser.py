@@ -26,10 +26,6 @@ class SemanticParser:
         # fmt: on
         p[0] = [p[1]]
 
-    # def p_quotes_enclosed_identifier(self, p):
-    #     "quotes_enclosed_identifier : QUOTES_ENCLOSED_IDENTIFIER"
-    #     p[0] = [p[1]]
-
     def p_assignment(self, p):
         "assignment : ASSIGNMENT"
 
