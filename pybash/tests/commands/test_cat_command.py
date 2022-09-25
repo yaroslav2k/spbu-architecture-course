@@ -74,3 +74,14 @@ def test_muxture_absent_present_files(mocker, text_file, command_streams):
         ]
     )
     assert result == 1
+
+
+def test_file_no_permissions(mocker, no_permissions_file, command_streams):
+    mocker.patch("sys.stdout.write")
+
+    f, _ = no_permissions_file
+    command = CatCommand()
+    result = command.run([f], command_streams)
+
+    sys.stdout.write.assert_called_once_with(f"cat: {f}: Permission denied\n")
+    assert result == 1
