@@ -6,9 +6,13 @@
 
 # Установка и запуск
 
-Требуется интерпретатор CPython 3.10.
+Требуется интерпретатор **CPython 3.10**.
 
-## Linux, macOS:
+В дальшейшем подразумевается, что python3 указывает на интерпретатор именно этой версии. (`python3 --version # => 3.10.*`)
+
+Оффициальный мануал по установке poetry: https://python-poetry.org/docs/#installation
+
+## Linux:
 
 1) Установка Poetry
 
@@ -20,16 +24,18 @@ curl -sSL https://install.python-poetry.org | python3 -
 
 2) Установка зависимостей
 
-Из корня репозитория:
+Из папки pybash в корне репозитория:
 
 ```bash
-(cd pybash && poetry install)
+poetry install
 ```
 
 3) Запуск
 
+Из папки pybash в корне репозитория:
+
 ```bash
-(cd pybash && poetry run python pybash/cli.py)
+poetry run python pybash/cli.py
 ```
 
 ## Windows (Powershell):
@@ -38,12 +44,13 @@ curl -sSL https://install.python-poetry.org | python3 -
 
 Из корня репозитория:
 
-```bash
+```
 pip install .\pybash\
 ```
 
 2) Запуск
-```bash
+
+```
 python .\pybash\pybash\cli.py
 ```
 
