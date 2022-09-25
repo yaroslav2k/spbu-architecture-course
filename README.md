@@ -8,23 +8,15 @@
 
 Требуется интерпретатор CPython 3.10.
 
+## Linux, macOS:
+
 1) Установка Poetry
 
 В проекте используется [Poetry](https://python-poetry.org/) для управления зависимости.<br>
 
-Linux, macOS, Windows (WSL):
-
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
 ```
-
-Windows (Powershell):
-
-```bash
-(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
-
-```
-
 
 2) Установка зависимостей
 
@@ -39,3 +31,19 @@ Windows (Powershell):
 ```bash
 (cd pybash && poetry run python pybash/cli.py)
 ```
+
+## Windows (Powershell):
+
+1) Установка зависимостей
+
+Из корня репозитория:
+
+```bash
+pip install .\pybash\
+```
+
+2) Запуск
+```bash
+python .\pybash\pybash\cli.py
+```
+
