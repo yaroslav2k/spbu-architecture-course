@@ -45,7 +45,4 @@ class LexicalParser:
         return t
 
     def t_error(self, t):
-        if Environment().get("PYBASH_DEBUG") == "true":
-            print(f"Illegal character {t.value[0]!r}")
-        else:
-            raise ParsingFailureException()
+        raise ParsingFailureException()

@@ -60,5 +60,5 @@ class Environment(object):
         return self._instance._variables.get(key, "")
 
     # TODO: delegate
-    def items(self, *args, **kwargs):
-        return iter(self._variables.items(*args, **kwargs))
+    def items(self):
+        return iter(self._variables.items())
