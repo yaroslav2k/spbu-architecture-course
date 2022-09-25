@@ -15,28 +15,6 @@ class Environment(object):
         return cls._instance
 
     @classmethod
-    def copy(cls) -> Environment:
-        """
-        Creates an instance of Environment with the same set of variables.
-
-        Parameters
-        ----------
-        cls: type
-            class to instantiate
-
-        Returns
-        -------
-        Environment:
-            copy of singleton environment
-        """
-        cls._setup_instance()
-
-        instance = object.__new__(cls)
-        instance._variables = dict(cls._instance._variables)
-
-        return instance
-
-    @classmethod
     def _setup_instance(cls) -> None:
         if cls._instance is not None:
             return
@@ -46,6 +24,17 @@ class Environment(object):
         # NOTE: We have to set PWD environment variable explicitly due
         # to WinAPI issues.
         cls._instance._variables["PWD"] = os.getcwd()
+
+    def get_variables(self) -> dict:
+        """
+        Get stored environment variables.
+
+        Returns
+        -------
+        dict:
+            environment variables
+        """
+        return self._variables
 
     def set(self, key: str, value: str) -> None:
         """
@@ -76,15 +65,3 @@ class Environment(object):
             value of a variable
         """
         return self._instance._variables.get(key, "")
-
-    # TODO: delegate
-    def items(self) -> Iterable:
-        """
-        Method to provide dict-like functionality.
-
-        Returns
-        -------
-        Iterable:
-            iterable object
-        """
-        return iter(self._variables.items())

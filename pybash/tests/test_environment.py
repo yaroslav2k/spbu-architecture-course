@@ -20,15 +20,9 @@ def test_get_not_set_value(environment):
     assert environment.get("bar") == ""
 
 
-def test_copy(environment):
+def test_get_variables(environment):
     environment.set("foo", "bar")
-    copy = Environment.copy()
+    variables = environment.get_variables()
 
-    assert copy != environment
-    assert copy.get("foo") == "bar"
-
-
-def test_items(environment):
-    result = environment.items()
-
-    assert type(result) == type(iter(dict().items()))
+    assert type(variables) == dict
+    assert variables.get("foo") == "bar"

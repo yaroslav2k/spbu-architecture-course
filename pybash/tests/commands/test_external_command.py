@@ -30,7 +30,7 @@ def test_run_successful_result(mocker, command_streams):
     subprocess.run.assert_called_once_with(
         arguments, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, env=ANY
     )
-    assert isinstance(subprocess.run.call_args[1]["env"], Environment)
+    assert isinstance(subprocess.run.call_args[1]["env"], dict)
 
 
 def test_run_failure_result(mocker, command_streams):
@@ -45,7 +45,7 @@ def test_run_failure_result(mocker, command_streams):
     subprocess.run.assert_called_once_with(
         arguments, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, env=ANY
     )
-    assert isinstance(subprocess.run.call_args[1]["env"], Environment)
+    assert isinstance(subprocess.run.call_args[1]["env"], dict)
 
 
 def test_raises_expected_exception(mocker, command_streams):

@@ -11,22 +11,13 @@ from pybash.environment import Environment
 class ExternalCommand(BaseCommand):
     def run(self, arguments: list[str], streams: CommandStreams) -> int:
         try:
-            if platform.system() == "Windows":
-                completed_process = subprocess.run(
-                    arguments,
-                    stdin=streams.input,
-                    stdout=streams.output,
-                    stderr=streams.error,
-                    env=Environment.copy()._variables,
-                )
-            else:
-                completed_process = subprocess.run(
-                    arguments,
-                    stdin=streams.input,
-                    stdout=streams.output,
-                    stderr=streams.error,
-                    env=Environment.copy(),
-                )
+            completed_process = subprocess.run(
+                arguments,
+                stdin=streams.input,
+                stdout=streams.output,
+                stderr=streams.error,
+                env=Environment().get_variables(),
+            )
         except FileNotFoundError:
             raise UnknownCommandException(arguments[0])
 
