@@ -8,13 +8,19 @@ class WcCommand(BaseCommand):
     """Class that represents wc command."""
 
     def run(self, arguments: list[str], streams: CommandStreams) -> int:
-        output = ""
         newlines_count, words_count, bytes_count = [], [], []
 
         exit_code = BaseCommand.EXIT_SUCCESS
 
         for file_path in arguments:
-            if os.path.exists(file_path):
+            if not os.path.exists(file_path):
+                streams.output.write(f"wc: {file_path}: No such file or directory\n")
+                exit_code = 1
+            elif os.path.isdir(file_path):
+                streams.output.write(f"wc: {file_path}: Is a directory\n")
+                streams.output.write(f"0 0 0 {file_path}\n")
+                exit_code = 1
+            else:
                 file_content = None
                 with open(file_path) as f:
                     file_content = f.read()
@@ -34,9 +40,6 @@ class WcCommand(BaseCommand):
                     + str(file_path)
                     + "\n"
                 )
-            else:
-                streams.output.write(f"wc: {file_path}: No such file or directory\n")
-                exit_code = 1
 
         if len(arguments) >= 2:
             streams.output.write(
