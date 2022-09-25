@@ -22,5 +22,5 @@ class ExternalCommand(BaseCommand):
 
         return completed_process.returncode
 
-    def is_external(self):
+    def is_external(self) -> bool:
         return True

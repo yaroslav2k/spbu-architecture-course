@@ -31,5 +31,13 @@ class BaseCommand(ABC):
         """
         pass
 
-    def is_external(self):
+    def is_external(self) -> bool:
+        """
+        Checking if a command is external or built-in.
+
+        Returns
+        -------
+        bool
+            True if a command is external, False otherwise
+        """
         return False
