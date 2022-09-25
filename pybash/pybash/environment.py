@@ -1,6 +1,7 @@
 from __future__ import annotations
 from collections.abc import Iterable
 import os
+import platform
 
 
 class Environment(object):
@@ -51,6 +52,9 @@ class Environment(object):
 
         cls._instance = object.__new__(cls)
         cls._instance._variables = dict(os.environ)
+
+        if platform.system() == "Windows":
+            cls._instance._variables["PWD"] = os.getcwd()
 
     def set(self, key: str, value: str) -> None:
         """
