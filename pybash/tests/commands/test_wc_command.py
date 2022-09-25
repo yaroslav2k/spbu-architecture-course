@@ -115,3 +115,12 @@ def test_mixture_folder_file(mocker, command_streams, text_file):
         ]
     )
     assert result == 1
+
+
+def test_file_no_permissions(mocker, command_streams, no_permissions_file):
+    mocker.patch("sys.stdout.write")
+    f, _ = no_permissions_file
+    arguments = [f]
+    result = WcCommand().run(arguments, command_streams)
+    sys.stdout.write.assert_called_once_with(f"wc: {f}: Permission denied\n")
+    assert result == 1
