@@ -34,3 +34,12 @@ def no_permissions_file(tmp_path_factory):
     os.chmod(f, 0o000)
 
     return f, content
+
+
+@pytest.fixture(scope="session")
+def folder_file(tmp_path_factory):
+    file_name = "folder"
+    f = tmp_path_factory.mktemp("data") / file_name
+    f.mkdir()
+
+    return f

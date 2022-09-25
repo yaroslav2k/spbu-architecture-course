@@ -85,3 +85,14 @@ def test_file_no_permissions(mocker, no_permissions_file, command_streams):
 
     sys.stdout.write.assert_called_once_with(f"cat: {f}: Permission denied\n")
     assert result == 1
+
+
+def test_folder(mocker, folder_file, command_streams):
+    mocker.patch("sys.stdout.write")
+
+    f = folder_file
+    command = CatCommand()
+    result = command.run([f], command_streams)
+
+    sys.stdout.write.assert_called_once_with(f"cat: {f}: Is a directory\n")
+    assert result == 1
