@@ -38,7 +38,7 @@ poetry install
 poetry run python pybash/cli.py
 ```
 
-## Windows (Powershell):
+## Windows (Сmd):
 
 1) Установка зависимостей
 
