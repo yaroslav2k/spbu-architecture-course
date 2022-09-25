@@ -1,7 +1,6 @@
 from __future__ import annotations
 from collections.abc import Iterable
 import os
-import platform
 
 
 class Environment(object):
@@ -11,7 +10,7 @@ class Environment(object):
 
     @classmethod
     def __new__(cls, *args) -> Environment:
-        cls.setup_instance()
+        cls._setup_instance()
 
         return cls._instance
 
@@ -30,7 +29,7 @@ class Environment(object):
         Environment:
             copy of singleton environment
         """
-        cls.setup_instance()
+        cls._setup_instance()
 
         instance = object.__new__(cls)
         instance._variables = dict(cls._instance._variables)
@@ -38,23 +37,15 @@ class Environment(object):
         return instance
 
     @classmethod
-    def setup_instance(cls) -> None:
-        """
-        Setups signleton environment.
-
-        Parameters
-        ----------
-        cls: type
-            class to instantiate
-        """
+    def _setup_instance(cls) -> None:
         if cls._instance is not None:
             return
 
         cls._instance = object.__new__(cls)
         cls._instance._variables = dict(os.environ)
-
-        if platform.system() == "Windows":
-            cls._instance._variables["PWD"] = os.getcwd()
+        # NOTE: We have to set PWD environment variable explicitly due
+        # to WinAPI issues.
+        cls._instance._variables["PWD"] = os.getcwd()
 
     def set(self, key: str, value: str) -> None:
         """
