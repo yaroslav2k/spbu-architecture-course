@@ -7,15 +7,18 @@ from pybash.custom_exceptions import (
 
 
 class CLI:
+    _last_exit_code = None
+
     def __init__(self):
         self._executor = Executor()
 
     def run(self) -> None:
+        """CLI entrypoint."""
         while True:
             user_input = input("$ ")
 
             try:
-                self._executor.call(user_input)
+                _last_exit_code = self._executor.call(user_input)
             except UserExitException:
                 break
             except ParsingFailureException:

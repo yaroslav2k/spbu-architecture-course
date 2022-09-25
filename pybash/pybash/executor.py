@@ -6,10 +6,23 @@ from pybash.custom_exceptions import UserExitException
 
 
 class Executor:
-    def call(self, string):
+    def call(self, string) -> int:
+        """
+        Executes given user input.
+
+        Parameters
+        ----------
+        string: str
+            string to parse and execute
+
+        Returns
+        -------
+        int
+            command exit code
+        """
         if (parsing_result := Parser().parse(string)) is None:
             return
 
-        CommandExecutor(sys.stdin, sys.stdout, sys.stderr).execute(
+        return CommandExecutor(sys.stdin, sys.stdout, sys.stderr).execute(
             parsing_result.command, parsing_result.arguments
         )

@@ -9,6 +9,22 @@ class CommandExecutor:
         self._error_stream = error_stream
 
     def execute(self, command: str, arguments: list[str]) -> int:
+        """
+        Executes given command with arguments.
+
+        Parameters
+        ----------
+        command: str
+            command to execute
+
+        arguments: list[str]
+            list of arguments to execute command with
+
+        Returns
+        -------
+        int
+            command exit code
+        """
         command_handler = Command.build(command)
         command_streams = CommandStreams(
             self._input_stream, self._output_stream, self._error_stream
