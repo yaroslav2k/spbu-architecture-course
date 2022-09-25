@@ -9,7 +9,7 @@ def text_file(tmp_path_factory):
     f.touch()
     f.write_text(content)
 
-    return str(f), content
+    return f, content
 
 
 @pytest.fixture(scope="session")
@@ -20,4 +20,4 @@ def empty_text_file(tmp_path_factory):
     f.touch()
     f.write_text(content)
 
-    return str(f), content
+    return f, content

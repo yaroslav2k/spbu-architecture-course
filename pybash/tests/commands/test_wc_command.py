@@ -88,3 +88,30 @@ def test_mixture_absent_existing_files(mocker, command_streams, text_file):
         ]
     )
     assert result == 1
+
+
+def test_single_folder(mocker, command_streams, text_file):
+    mocker.patch("sys.stdout.write")
+    f, _ = text_file
+    arguments = [f.parent]
+    result = WcCommand().run(arguments, command_streams)
+    sys.stdout.write.assert_has_calls(
+        [call(f"wc: {f.parent}: Is a directory\n"), call(f"0 0 0 {f.parent}\n")]
+    )
+    assert result == 1
+
+
+def test_mixture_folder_file(mocker, command_streams, text_file):
+    mocker.patch("sys.stdout.write")
+    f, _ = text_file
+    arguments = [f, f.parent]
+    result = WcCommand().run(arguments, command_streams)
+    sys.stdout.write.assert_has_calls(
+        [
+            call(f"4 6 40 {f}\n"),
+            call(f"wc: {f.parent}: Is a directory\n"),
+            call(f"0 0 0 {f.parent}\n"),
+            call("4 6 40 total\n"),
+        ]
+    )
+    assert result == 1
