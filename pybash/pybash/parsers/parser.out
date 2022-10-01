@@ -5,147 +5,158 @@ Grammar
 Rule 0     S' -> expression
 Rule 1     empty -> <empty>
 Rule 2     identifier -> IDENTIFIER
-Rule 3     quotes_enclosed_identifier -> QUOTES_ENCLOSED_IDENTIFIER
-Rule 4     assignment -> ASSIGNMENT
-Rule 5     expression -> empty
-Rule 6     expression -> expression identifier
-Rule 7     expression -> expression quotes_enclosed_identifier
-Rule 8     expression -> identifier
-Rule 9     expression -> quotes_enclosed_identifier
-Rule 10    expression -> assignment
+Rule 3     identifier -> SINGLE_QUOTES_ENCLOSED_IDENTIFIER
+Rule 4     identifier -> DOUBLE_QUOTES_ENCLOSED_IDENTIFIER
+Rule 5     assignment -> ASSIGNMENT
+Rule 6     expression -> empty
+Rule 7     expression -> identifier
+Rule 8     expression -> expression identifier
+Rule 9     expression -> assignment
 
 Terminals, with rules where they appear
 
-ASSIGNMENT           : 4
+ASSIGNMENT           : 5
+DOUBLE_QUOTES_ENCLOSED_IDENTIFIER : 4
 IDENTIFIER           : 2
-QUOTES_ENCLOSED_IDENTIFIER : 3
+SINGLE_QUOTES_ENCLOSED_IDENTIFIER : 3
 error                : 
 
 Nonterminals, with rules where they appear
 
-assignment           : 10
-empty                : 5
-expression           : 6 7 0
-identifier           : 6 8
-quotes_enclosed_identifier : 7 9
+assignment           : 9
+empty                : 6
+expression           : 8 0
+identifier           : 7 8
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . expression
-    (5) expression -> . empty
-    (6) expression -> . expression identifier
-    (7) expression -> . expression quotes_enclosed_identifier
-    (8) expression -> . identifier
-    (9) expression -> . quotes_enclosed_identifier
-    (10) expression -> . assignment
+    (6) expression -> . empty
+    (7) expression -> . identifier
+    (8) expression -> . expression identifier
+    (9) expression -> . assignment
     (1) empty -> .
     (2) identifier -> . IDENTIFIER
-    (3) quotes_enclosed_identifier -> . QUOTES_ENCLOSED_IDENTIFIER
-    (4) assignment -> . ASSIGNMENT
+    (3) identifier -> . SINGLE_QUOTES_ENCLOSED_IDENTIFIER
+    (4) identifier -> . DOUBLE_QUOTES_ENCLOSED_IDENTIFIER
+    (5) assignment -> . ASSIGNMENT
 
+  ! shift/reduce conflict for IDENTIFIER resolved as shift
+  ! shift/reduce conflict for SINGLE_QUOTES_ENCLOSED_IDENTIFIER resolved as shift
+  ! shift/reduce conflict for DOUBLE_QUOTES_ENCLOSED_IDENTIFIER resolved as shift
     $end            reduce using rule 1 (empty -> .)
-    IDENTIFIER      shift and go to state 6
-    QUOTES_ENCLOSED_IDENTIFIER shift and go to state 7
+    IDENTIFIER      shift and go to state 5
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER shift and go to state 6
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER shift and go to state 7
     ASSIGNMENT      shift and go to state 8
+
+  ! IDENTIFIER      [ reduce using rule 1 (empty -> .) ]
+  ! SINGLE_QUOTES_ENCLOSED_IDENTIFIER [ reduce using rule 1 (empty -> .) ]
+  ! DOUBLE_QUOTES_ENCLOSED_IDENTIFIER [ reduce using rule 1 (empty -> .) ]
 
     expression                     shift and go to state 1
     empty                          shift and go to state 2
     identifier                     shift and go to state 3
-    quotes_enclosed_identifier     shift and go to state 4
-    assignment                     shift and go to state 5
+    assignment                     shift and go to state 4
 
 state 1
 
     (0) S' -> expression .
-    (6) expression -> expression . identifier
-    (7) expression -> expression . quotes_enclosed_identifier
+    (8) expression -> expression . identifier
     (2) identifier -> . IDENTIFIER
-    (3) quotes_enclosed_identifier -> . QUOTES_ENCLOSED_IDENTIFIER
+    (3) identifier -> . SINGLE_QUOTES_ENCLOSED_IDENTIFIER
+    (4) identifier -> . DOUBLE_QUOTES_ENCLOSED_IDENTIFIER
 
-    IDENTIFIER      shift and go to state 6
-    QUOTES_ENCLOSED_IDENTIFIER shift and go to state 7
+    IDENTIFIER      shift and go to state 5
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER shift and go to state 6
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER shift and go to state 7
 
     identifier                     shift and go to state 9
-    quotes_enclosed_identifier     shift and go to state 10
 
 state 2
 
-    (5) expression -> empty .
+    (6) expression -> empty .
 
-    IDENTIFIER      reduce using rule 5 (expression -> empty .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 5 (expression -> empty .)
-    $end            reduce using rule 5 (expression -> empty .)
+    IDENTIFIER      reduce using rule 6 (expression -> empty .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 6 (expression -> empty .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 6 (expression -> empty .)
+    $end            reduce using rule 6 (expression -> empty .)
 
 
 state 3
 
-    (8) expression -> identifier .
+    (7) expression -> identifier .
 
-    IDENTIFIER      reduce using rule 8 (expression -> identifier .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 8 (expression -> identifier .)
-    $end            reduce using rule 8 (expression -> identifier .)
+    IDENTIFIER      reduce using rule 7 (expression -> identifier .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 7 (expression -> identifier .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 7 (expression -> identifier .)
+    $end            reduce using rule 7 (expression -> identifier .)
 
 
 state 4
 
-    (9) expression -> quotes_enclosed_identifier .
+    (9) expression -> assignment .
 
-    IDENTIFIER      reduce using rule 9 (expression -> quotes_enclosed_identifier .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 9 (expression -> quotes_enclosed_identifier .)
-    $end            reduce using rule 9 (expression -> quotes_enclosed_identifier .)
+    IDENTIFIER      reduce using rule 9 (expression -> assignment .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 9 (expression -> assignment .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 9 (expression -> assignment .)
+    $end            reduce using rule 9 (expression -> assignment .)
 
 
 state 5
 
-    (10) expression -> assignment .
+    (2) identifier -> IDENTIFIER .
 
-    IDENTIFIER      reduce using rule 10 (expression -> assignment .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 10 (expression -> assignment .)
-    $end            reduce using rule 10 (expression -> assignment .)
+    IDENTIFIER      reduce using rule 2 (identifier -> IDENTIFIER .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 2 (identifier -> IDENTIFIER .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 2 (identifier -> IDENTIFIER .)
+    $end            reduce using rule 2 (identifier -> IDENTIFIER .)
 
 
 state 6
 
-    (2) identifier -> IDENTIFIER .
+    (3) identifier -> SINGLE_QUOTES_ENCLOSED_IDENTIFIER .
 
-    IDENTIFIER      reduce using rule 2 (identifier -> IDENTIFIER .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 2 (identifier -> IDENTIFIER .)
-    $end            reduce using rule 2 (identifier -> IDENTIFIER .)
+    IDENTIFIER      reduce using rule 3 (identifier -> SINGLE_QUOTES_ENCLOSED_IDENTIFIER .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 3 (identifier -> SINGLE_QUOTES_ENCLOSED_IDENTIFIER .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 3 (identifier -> SINGLE_QUOTES_ENCLOSED_IDENTIFIER .)
+    $end            reduce using rule 3 (identifier -> SINGLE_QUOTES_ENCLOSED_IDENTIFIER .)
 
 
 state 7
 
-    (3) quotes_enclosed_identifier -> QUOTES_ENCLOSED_IDENTIFIER .
+    (4) identifier -> DOUBLE_QUOTES_ENCLOSED_IDENTIFIER .
 
-    IDENTIFIER      reduce using rule 3 (quotes_enclosed_identifier -> QUOTES_ENCLOSED_IDENTIFIER .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 3 (quotes_enclosed_identifier -> QUOTES_ENCLOSED_IDENTIFIER .)
-    $end            reduce using rule 3 (quotes_enclosed_identifier -> QUOTES_ENCLOSED_IDENTIFIER .)
+    IDENTIFIER      reduce using rule 4 (identifier -> DOUBLE_QUOTES_ENCLOSED_IDENTIFIER .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 4 (identifier -> DOUBLE_QUOTES_ENCLOSED_IDENTIFIER .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 4 (identifier -> DOUBLE_QUOTES_ENCLOSED_IDENTIFIER .)
+    $end            reduce using rule 4 (identifier -> DOUBLE_QUOTES_ENCLOSED_IDENTIFIER .)
 
 
 state 8
 
-    (4) assignment -> ASSIGNMENT .
+    (5) assignment -> ASSIGNMENT .
 
-    IDENTIFIER      reduce using rule 4 (assignment -> ASSIGNMENT .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 4 (assignment -> ASSIGNMENT .)
-    $end            reduce using rule 4 (assignment -> ASSIGNMENT .)
+    IDENTIFIER      reduce using rule 5 (assignment -> ASSIGNMENT .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 5 (assignment -> ASSIGNMENT .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 5 (assignment -> ASSIGNMENT .)
+    $end            reduce using rule 5 (assignment -> ASSIGNMENT .)
 
 
 state 9
 
-    (6) expression -> expression identifier .
+    (8) expression -> expression identifier .
 
-    IDENTIFIER      reduce using rule 6 (expression -> expression identifier .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 6 (expression -> expression identifier .)
-    $end            reduce using rule 6 (expression -> expression identifier .)
+    IDENTIFIER      reduce using rule 8 (expression -> expression identifier .)
+    SINGLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 8 (expression -> expression identifier .)
+    DOUBLE_QUOTES_ENCLOSED_IDENTIFIER reduce using rule 8 (expression -> expression identifier .)
+    $end            reduce using rule 8 (expression -> expression identifier .)
 
-
-state 10
-
-    (7) expression -> expression quotes_enclosed_identifier .
-
-    IDENTIFIER      reduce using rule 7 (expression -> expression quotes_enclosed_identifier .)
-    QUOTES_ENCLOSED_IDENTIFIER reduce using rule 7 (expression -> expression quotes_enclosed_identifier .)
-    $end            reduce using rule 7 (expression -> expression quotes_enclosed_identifier .)
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for IDENTIFIER in state 0 resolved as shift
+WARNING: shift/reduce conflict for SINGLE_QUOTES_ENCLOSED_IDENTIFIER in state 0 resolved as shift
+WARNING: shift/reduce conflict for DOUBLE_QUOTES_ENCLOSED_IDENTIFIER in state 0 resolved as shift

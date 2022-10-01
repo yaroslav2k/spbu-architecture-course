@@ -25,7 +25,7 @@ def test_default():
 
     assert result[0].type == "IDENTIFIER"
     assert result[1].type == "IDENTIFIER"
-    assert result[2].type == "QUOTES_ENCLOSED_IDENTIFIER"
+    assert result[2].type == "SINGLE_QUOTES_ENCLOSED_IDENTIFIER"
 
 
 def test_assignment():

@@ -22,7 +22,8 @@ class SemanticParser:
     def p_identifier(self, p):
         # fmt: off
         """identifier : IDENTIFIER
-                      | QUOTES_ENCLOSED_IDENTIFIER"""
+                      | SINGLE_QUOTES_ENCLOSED_IDENTIFIER
+                      | DOUBLE_QUOTES_ENCLOSED_IDENTIFIER"""
         # fmt: on
         p[0] = [p[1]]
 

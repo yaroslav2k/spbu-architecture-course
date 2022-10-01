@@ -4,7 +4,12 @@ from pybash.environment import Environment
 
 
 class LexicalParser:
-    tokens = ("ASSIGNMENT", "IDENTIFIER", "QUOTES_ENCLOSED_IDENTIFIER")
+    tokens = (
+        "ASSIGNMENT",
+        "IDENTIFIER",
+        "SINGLE_QUOTES_ENCLOSED_IDENTIFIER",
+        "DOUBLE_QUOTES_ENCLOSED_IDENTIFIER",
+    )
 
     t_ignore = " \t\n"
 
@@ -33,8 +38,15 @@ class LexicalParser:
 
         return t
 
-    def t_QUOTES_ENCLOSED_IDENTIFIER(self, t):
-        r"\'[^\t\n\r\f\v=]*\'|\"[^\t\n\r\f\v=]*\" "
+    def t_SINGLE_QUOTES_ENCLOSED_IDENTIFIER(self, t):
+        r"\'[^\t\n\r\f\v=]*\'"
+
+        t.value = t.value[1:-1]
+
+        return t
+
+    def t_DOUBLE_QUOTES_ENCLOSED_IDENTIFIER(self, t):
+        r"\"[^\t\n\r\f\v=]*\" "
 
         t.value = t.value[1:-1]
 
