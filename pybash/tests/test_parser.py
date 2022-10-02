@@ -2,6 +2,7 @@ import pytest
 
 from pybash.parser import Parser, ParsingResult
 from pybash.custom_exceptions import ParsingFailureException
+from pybash.environment import Environment
 
 
 def perform(value):
@@ -9,6 +10,9 @@ def perform(value):
 
 
 def test_parse():
+    Environment().set("KEY_1", "VAL_1")
+    Environment().set("KEY_2", "VAL_2")
+
     expectations = [
         ("cat abc.txt data.json", ParsingResult([["cat", ["abc.txt", "data.json"]]])),
         (
@@ -57,6 +61,11 @@ def test_parse():
             ParsingResult(
                 [["python", ["-c", "print(1)"]], ["python", ["-c", "print(1)"]]]
             ),
+        ),
+        ('python -c "print(1)"', ParsingResult([["python", ["-c", "print(1)"]]])),
+        (
+            'python -c "print("$KEY_1")"',
+            ParsingResult([["python", ["-c", 'print("VAL_1")']]]),
         ),
     ]
 

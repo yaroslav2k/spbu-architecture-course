@@ -25,7 +25,8 @@ class CLI:
                 print("Syntax error")
             except UnknownCommandException as e:
                 print(f"{e.args[0]}: command not found")
-            except BaseException:
+            except BaseException as e:
+                print(e)
                 print("Unknown error")
 
 

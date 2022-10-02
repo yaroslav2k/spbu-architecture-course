@@ -40,7 +40,8 @@ class Parser:
             return None
 
         specification = self._semantic_parser.parser.parse(
-            string, lexer=self._lexical_parser.get_parsing_backend()
+            self._prepare_user_provided_string(string),
+            lexer=self._lexical_parser.get_parsing_backend(),
         )
 
         if not specification:
@@ -49,3 +50,6 @@ class Parser:
             return ParsingResult(
                 list(map(lambda item: [item[0], item[1:]], specification))
             )
+
+    def _prepare_user_provided_string(self, string):
+        return string.replace('\\"', '"')
