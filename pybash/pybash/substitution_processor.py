@@ -24,7 +24,7 @@ class SubstitutionProcessor:
             string after all substitutions
         """
         substituted_input = re.sub(
-            r"'[^']*'|\"[^\"]*\"|\$[^.,!?\s\\\/\$]+|\$",
+            r"'.*'|\".*\"|\$[^.,!?\s\\\/\$]+|\$",
             self._match_substution,
             user_input,
         )
