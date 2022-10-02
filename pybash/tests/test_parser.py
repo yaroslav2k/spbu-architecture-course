@@ -52,6 +52,13 @@ def test_parse():
             "foo | bar | alpha | gamma",
             ParsingResult([["foo", []], ["bar", []], ["alpha", []], ["gamma", []]]),
         ),
+        # FIXME!
+        # (
+        #     "python -c 'print(1)' | python -c 'print(1)'",
+        #     ParsingResult(
+        #         [["python", ["-c", "print(1)"]], ["python", ["-c", "print(1)"]]]
+        #     ),
+        # ),
     ]
 
     for expectation_entry in expectations:
