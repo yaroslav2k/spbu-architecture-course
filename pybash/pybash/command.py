@@ -20,10 +20,10 @@ class Command:
         mapping = {
             "echo": EchoCommand,
             "cat": CatCommand,
-            "assign": AssignCommand,
             "wc": WcCommand,
             "pwd": PwdCommand,
             "exit": ExitCommand,
+            AssignCommand._INTERNAL_IDENTIFIER: AssignCommand,
         }
 
         return mapping.get(command, ExternalCommand)()

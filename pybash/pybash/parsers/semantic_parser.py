@@ -1,14 +1,12 @@
 from pybash.custom_exceptions import ParsingFailureException
 from pybash.environment import Environment
+from pybash.commands.assign_command import AssignCommand
 
 import ply.yacc as yacc
 
 
 class SemanticParser:
-    # precedence = (
-    #     ('left', 'PIPE'),
-    #     ('left', 'IDENTIFIER')
-    # )
+    precedence = (("left", "PIPE"), ("left", "IDENTIFIER"))
 
     def __init__(self, tokens):
         self.tokens = tokens
@@ -43,7 +41,7 @@ class SemanticParser:
         """assignment : ASSIGNMENT"""
 
         tokens = p[1].split("=")
-        p[0] = ["assign", tokens[0], tokens[1]]
+        p[0] = [AssignCommand._INTERNAL_IDENTIFIER, tokens[0], tokens[1]]
 
     def p_identifier(self, p):
         # fmt: off

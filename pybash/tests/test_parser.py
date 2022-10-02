@@ -39,7 +39,7 @@ def test_parse():
                 [["python", ["-c", "import os; print(os.environ.get('PATH'))"]]]
             ),
         ),
-        ("a=b", ParsingResult([["assign", ["a", "b"]]])),
+        ("a=b", ParsingResult([["__internal_assign", ["a", "b"]]])),
         ("executable '' abc", ParsingResult([["executable", ["", "abc"]]])),
         ("", None),
         ("       ", None),

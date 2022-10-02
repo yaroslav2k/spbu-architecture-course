@@ -13,7 +13,7 @@ def perform(value):
 def test_parse():
     expectations = [
         ("foo bar 1 2 3", [["foo", "bar", "1", "2", "3"]]),
-        ("foo=bar", [["assign", "foo", "bar"]]),
+        ("foo=bar", [["__internal_assign", "foo", "bar"]]),
     ]
 
     for expectation_entry in expectations:
