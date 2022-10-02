@@ -3,6 +3,7 @@ from ply.lex import LexToken
 
 from pybash.parsers.lexical_parser import LexicalParser
 from pybash.custom_exceptions import ParsingFailureException
+from pybash.environment import Environment
 
 
 def perform(value):
@@ -77,6 +78,26 @@ def test_multiple_pipes():
         "IDENTIFIER",
         "IDENTIFIER",
     ]
+    for i in range(expected_length):
+        assert result[i].type == expected_types[i]
+
+
+def test_substituions():
+    Environment().set("joy", "division")
+
+    result = perform("echo $joy")
+
+    expected_length = 2
+    assert (len(result)) == expected_length
+
+    for i in range(expected_length):
+        assert type(result[i]) == LexToken
+
+    expected_values = ["echo", "division"]
+    for i in range(expected_length):
+        assert result[i].value == expected_values[i]
+
+    expected_types = ["IDENTIFIER", "IDENTIFIER"]
     for i in range(expected_length):
         assert result[i].type == expected_types[i]
 

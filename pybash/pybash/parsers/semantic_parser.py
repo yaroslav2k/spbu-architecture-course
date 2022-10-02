@@ -2,6 +2,7 @@ from pybash.custom_exceptions import ParsingFailureException
 from pybash.environment import Environment
 from pybash.commands.assign_command import AssignCommand
 
+
 import ply.yacc as yacc
 
 

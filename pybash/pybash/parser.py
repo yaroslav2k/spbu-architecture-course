@@ -32,8 +32,8 @@ class Parser:
 
         Returns
         -------
-        Optional[tuple[str, list[str]]]
-            parsed result consists of command and its arguments
+        Optional[ParsingResult]
+            parsing result consists of command and its arguments
             or None if no tokens to parse were found
         """
         if not len(string.strip()):
