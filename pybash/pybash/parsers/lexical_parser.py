@@ -50,7 +50,7 @@ class LexicalParser:
         return t
 
     def t_SINGLE_QUOTES_ENCLOSED_IDENTIFIER(self, t):
-        r"\'[^\t\n\r\f\v=]*\'"
+        r"""\'[^\t\n\r\f\v=\']*\'"""
 
         t.value = t.value[1:-1]
         self._on_parse_callback(t)
@@ -58,7 +58,7 @@ class LexicalParser:
         return t
 
     def t_DOUBLE_QUOTES_ENCLOSED_IDENTIFIER(self, t):
-        r"\"[^\t\n\r\f\v=]*\" "
+        r"""\"[^\t\n\r\f\v=\"]*\" """
 
         t.value = t.value[1:-1]
         self._on_parse_callback(t)

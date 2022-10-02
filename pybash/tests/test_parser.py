@@ -34,7 +34,7 @@ def test_parse():
         ("executable ''", ParsingResult([["executable", [""]]])),
         ("executable '' abc", ParsingResult([["executable", ["", "abc"]]])),
         (
-            "python -c 'import os; print(os.environ.get('PATH'))'",
+            "python -c \"import os; print(os.environ.get('PATH'))\"",
             ParsingResult(
                 [["python", ["-c", "import os; print(os.environ.get('PATH'))"]]]
             ),
@@ -52,13 +52,12 @@ def test_parse():
             "foo | bar | alpha | gamma",
             ParsingResult([["foo", []], ["bar", []], ["alpha", []], ["gamma", []]]),
         ),
-        # FIXME!
-        # (
-        #     "python -c 'print(1)' | python -c 'print(1)'",
-        #     ParsingResult(
-        #         [["python", ["-c", "print(1)"]], ["python", ["-c", "print(1)"]]]
-        #     ),
-        # ),
+        (
+            "python -c 'print(1)' | python -c 'print(1)'",
+            ParsingResult(
+                [["python", ["-c", "print(1)"]], ["python", ["-c", "print(1)"]]]
+            ),
+        ),
     ]
 
     for expectation_entry in expectations:

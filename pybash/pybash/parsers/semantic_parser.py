@@ -20,8 +20,8 @@ class SemanticParser:
         # fmt: off
         """pipeline : expression
                     | pipeline pipe expression"""
-
         # fmt: on
+
         if len(p) == 2:
             p[0] = [p[1]]
         else:
