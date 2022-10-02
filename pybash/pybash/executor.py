@@ -2,7 +2,6 @@ import sys
 
 from pybash.parser import Parser, ParsingResult
 from pybash.command_executor import CommandExecutor
-from pybash.custom_exceptions import UserExitException
 
 
 class Executor:
@@ -23,6 +22,11 @@ class Executor:
         if (parsing_result := Parser().parse(string)) is None:
             return
 
-        return CommandExecutor(sys.stdin, sys.stdout, sys.stderr).execute(
-            parsing_result.command, parsing_result.arguments
-        )
+        # TODO: Implement commands piping.
+        exit_code = None
+        for command in parsing_result.commands:
+            exit_code = CommandExecutor(sys.stdin, sys.stdout, sys.stderr).execute(
+                command[0], command[1]
+            )
+
+        return exit_code

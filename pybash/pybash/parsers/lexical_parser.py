@@ -9,6 +9,7 @@ class LexicalParser:
         "IDENTIFIER",
         "SINGLE_QUOTES_ENCLOSED_IDENTIFIER",
         "DOUBLE_QUOTES_ENCLOSED_IDENTIFIER",
+        "PIPE",
     )
 
     t_ignore = " \t\n"
@@ -30,6 +31,11 @@ class LexicalParser:
     # method.
     def t_ASSIGNMENT(self, t):
         r"\S+=\S+"
+
+        return t
+
+    def t_PIPE(self, t):
+        r"\|"
 
         return t
 

@@ -6,16 +6,20 @@ from pybash.custom_exceptions import ParsingFailureException
 from pybash.environment import Environment
 
 
-def test_parse_default():
-    result = SemanticParser(LexicalParser.tokens).parse("foo bar 1 2 3")
-
-    assert result == ["foo", "bar", "1", "2", "3"]
+def perform(value):
+    return SemanticParser(LexicalParser.tokens).parse(value)
 
 
-def test_parse_assignment():
-    result = SemanticParser(LexicalParser.tokens).parse("foo=bar")
+def test_parse():
+    expectations = [
+        ("foo bar 1 2 3", [["foo", "bar", "1", "2", "3"]]),
+        ("foo=bar", [["assign", "foo", "bar"]]),
+    ]
 
-    assert result == ["assign", "foo", "bar"]
+    for expectation_entry in expectations:
+        result = perform(expectation_entry[0])
+
+        assert perform(expectation_entry[0]) == expectation_entry[1]
 
 
 def test_error_not_debug():

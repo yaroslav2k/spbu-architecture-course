@@ -8,147 +8,61 @@ def perform(value):
     return Parser().parse(value)
 
 
-def test_regular_command_with_arguments():
-    value = "cat abc.txt data.json"
-    expected_output = ParsingResult("cat", ["abc.txt", "data.json"])
+def test_parse():
+    expectations = [
+        ("cat abc.txt data.json", ParsingResult([["cat", ["abc.txt", "data.json"]]])),
+        (
+            "           cat abc.txt data.json",
+            ParsingResult([["cat", ["abc.txt", "data.json"]]]),
+        ),
+        ("cat abc.txt data.json  ", ParsingResult([["cat", ["abc.txt", "data.json"]]])),
+        (
+            "cat abc.txt    data.json",
+            ParsingResult([["cat", ["abc.txt", "data.json"]]]),
+        ),
+        ("cat", ParsingResult([["cat", []]])),
+        ("   cat", ParsingResult([["cat", []]])),
+        ("cat      ", ParsingResult([["cat", []]])),
+        ("1cat", ParsingResult([["1cat", []]])),
+        ("./executable", ParsingResult([["./executable", []]])),
+        ("./executable foo bar", ParsingResult([["./executable", ["foo", "bar"]]])),
+        ('./executable foo "bar"', ParsingResult([["./executable", ["foo", "bar"]]])),
+        (
+            "./executable 'foo' \"bar\"",
+            ParsingResult([["./executable", ["foo", "bar"]]]),
+        ),
+        ("executable ''", ParsingResult([["executable", [""]]])),
+        ("executable '' abc", ParsingResult([["executable", ["", "abc"]]])),
+        (
+            "python -c 'import os; print(os.environ.get('PATH'))'",
+            ParsingResult(
+                [["python", ["-c", "import os; print(os.environ.get('PATH'))"]]]
+            ),
+        ),
+        ("a=b", ParsingResult([["assign", ["a", "b"]]])),
+        ("executable '' abc", ParsingResult([["executable", ["", "abc"]]])),
+        ("", None),
+        ("       ", None),
+        ("    \t   \n", None),
+        # pipes
+        ("foo | bar", ParsingResult([["foo", []], ["bar", []]])),
+        ("foo | bar a123 -c", ParsingResult([["foo", []], ["bar", ["a123", "-c"]]])),
+        ("foo foo foo | bar", ParsingResult([["foo", ["foo", "foo"]], ["bar", []]])),
+        (
+            "foo | bar | alpha | gamma",
+            ParsingResult([["foo", []], ["bar", []], ["alpha", []], ["gamma", []]]),
+        ),
+    ]
 
-    assert perform(value) == expected_output
+    for expectation_entry in expectations:
+        result = perform(expectation_entry[0])
 
-
-def test_regular_command_with_arguments_with_leading_spaces():
-    value = "           cat abc.txt data.json"
-    expected_output = ParsingResult("cat", ["abc.txt", "data.json"])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_command_with_arguments_with_trailing_spaces():
-    value = "cat abc.txt data.json  "
-    expected_output = ParsingResult("cat", ["abc.txt", "data.json"])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_command_with_arguments_with_spaces_between_arguments():
-    value = "cat abc.txt    data.json"
-    expected_output = ParsingResult("cat", ["abc.txt", "data.json"])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_command_without_arguments():
-    value = "cat"
-    expected_output = ParsingResult("cat", [])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_command_without_arguments_with_leading_spaces():
-    value = "   cat"
-    expected_output = ParsingResult("cat", [])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_command_without_arguments_with_trailing_spaces():
-    value = "cat      "
-    expected_output = ParsingResult("cat", [])
-
-    assert perform(value) == expected_output
-
-
-def test_command_staring_with_digit():
-    value = "1cat"
-    expected_output = ParsingResult("1cat", [])
-
-    assert perform(value) == expected_output
+        assert perform(expectation_entry[0]) == expectation_entry[1]
 
 
-def test_relative_path():
-    value = "./executable"
-    expected_output = ParsingResult("./executable", [])
+def test_errors():
+    test_data = ["a=b foo=bar", "foo |", "| foo", "foo | |"]
 
-    assert perform(value) == expected_output
-
-
-def test_relative_path_with_arguments():
-    value = "./executable foo bar"
-    expected_output = ParsingResult("./executable", ["foo", "bar"])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_path_with_eclosed_in_single_quotes_argument():
-    value = "./executable 'foo' bar"
-    expected_output = ParsingResult("./executable", ["foo", "bar"])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_path_with_eclosed_in_double_quotes_argument():
-    value = './executable foo "bar"'
-    expected_output = ParsingResult("./executable", ["foo", "bar"])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_path_with_eclosed_in_single_and_double_quotes_argument():
-    value = "./executable 'foo' \"bar\""
-    expected_output = ParsingResult("./executable", ["foo", "bar"])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_path_with_empty_enclosed_in_quotes_argument():
-    value = "executable ''"
-    expected_output = ParsingResult("executable", [""])
-
-    assert perform(value) == expected_output
-
-
-def test_regular_path_with_empty_enclosed_in_quotes_argument_and_regular_one():
-    value = "executable '' abc"
-    expected_output = ParsingResult("executable", ["", "abc"])
-
-    assert perform(value) == expected_output
-
-
-def test_nested_quotes():
-    value = "python -c 'import os; print(os.environ.get('PATH'))'"
-    expected_output = ParsingResult(
-        "python", ["-c", "import os; print(os.environ.get('PATH'))"]
-    )
-
-    assert perform(value) == expected_output
-
-
-def test_assignment():
-    value = "a=b"
-    expected_output = ParsingResult("assign", ["a", "b"])
-
-    assert perform(value) == expected_output
-
-
-def test_invalid_input():
-    value = "a=b foo=bar"
-
-    with pytest.raises(ParsingFailureException):
-        perform(value)
-
-
-def test_empty_input():
-    value = ""
-
-    assert perform(value) is None
-
-
-def test_blank_input():
-    value = "   "
-
-    assert perform(value) is None
-
-
-def test_whitespace_input():
-    value = "  \t \n"
-
-    assert perform(value) is None
+    for test_entry in test_data:
+        with pytest.raises(ParsingFailureException):
+            perform(test_entry)

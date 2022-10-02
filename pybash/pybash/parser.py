@@ -2,26 +2,26 @@ from typing import Optional
 from dataclasses import dataclass
 
 from pybash.parsers.lexical_parser import LexicalParser
-
 from pybash.parsers.semantic_parser import SemanticParser
-
-from pybash.command import Command
 
 
 @dataclass
 class ParsingResult:
-    command: str
-    arguments: list[str]
+    commands: list[tuple[str, list[str]]]
 
 
 class Parser:
-    """Class that provides parsing functionality."""
+    """
+    Thin facade around PLY (python-lex-yacc), which is a dependency-free
+    python implementation of GNU Flex and GNU YACC parsers.
+    Current implementation uses LALR(1) parsing algorithm.
+    """
 
     def __init__(self):
         self._lexical_parser = LexicalParser()
         self._semantic_parser = SemanticParser(LexicalParser.tokens)
 
-    def parse(self, string: str) -> Optional[tuple[str, list[str]]]:
+    def parse(self, string: str) -> Optional[ParsingResult]:
         """
         Parses given string.
 
@@ -36,11 +36,16 @@ class Parser:
             parsed result consists of command and its arguments
             or None if no tokens to parse were found
         """
+        if not len(string.strip()):
+            return None
+
         specification = self._semantic_parser.parser.parse(
             string, lexer=self._lexical_parser.get_parsing_backend()
         )
 
-        if specification is None:
-            return specification
+        if not specification:
+            return None
         else:
-            return ParsingResult(specification[0], specification[1:])
+            return ParsingResult(
+                list(map(lambda item: [item[0], item[1:]], specification))
+            )
