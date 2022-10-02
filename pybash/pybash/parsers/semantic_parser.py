@@ -11,7 +11,7 @@ class SemanticParser:
 
     def __init__(self, tokens):
         self.tokens = tokens
-        self.parser = yacc.yacc(module=self, debug=True)
+        self.parser = yacc.yacc(module=self)
 
     def parse(self, string):
         return self.parser.parse(string)
