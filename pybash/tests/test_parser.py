@@ -39,7 +39,7 @@ def test_parse():
                 [["python", ["-c", "import os; print(os.environ.get('PATH'))"]]]
             ),
         ),
-        ("a=b", ParsingResult([["assign", ["a", "b"]]])),
+        ("a=b", ParsingResult([["__internal_assign", ["a", "b"]]])),
         ("executable '' abc", ParsingResult([["executable", ["", "abc"]]])),
         ("", None),
         ("       ", None),
@@ -52,6 +52,13 @@ def test_parse():
             "foo | bar | alpha | gamma",
             ParsingResult([["foo", []], ["bar", []], ["alpha", []], ["gamma", []]]),
         ),
+        # FIXME!
+        # (
+        #     "python -c 'print(1)' | python -c 'print(1)'",
+        #     ParsingResult(
+        #         [["python", ["-c", "print(1)"]], ["python", ["-c", "print(1)"]]]
+        #     ),
+        # ),
     ]
 
     for expectation_entry in expectations:

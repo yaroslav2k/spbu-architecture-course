@@ -5,7 +5,7 @@ _tabversion = "3.10"
 
 _lr_method = "LALR"
 
-_lr_signature = "ASSIGNMENT DOUBLE_QUOTES_ENCLOSED_IDENTIFIER IDENTIFIER PIPE SINGLE_QUOTES_ENCLOSED_IDENTIFIERpipeline : expression\n                    | pipeline pipe expressionexpression : identifier\n                      | expression identifier\n                      | assignmentassignment : ASSIGNMENTidentifier : IDENTIFIER\n                      | SINGLE_QUOTES_ENCLOSED_IDENTIFIER\n                      | DOUBLE_QUOTES_ENCLOSED_IDENTIFIERpipe : PIPE"
+_lr_signature = "leftPIPEleftIDENTIFIERASSIGNMENT DOUBLE_QUOTES_ENCLOSED_IDENTIFIER IDENTIFIER PIPE SINGLE_QUOTES_ENCLOSED_IDENTIFIERpipeline : expression\n                    | pipeline pipe expressionexpression : identifier\n                      | expression identifier\n                      | assignmentassignment : ASSIGNMENTidentifier : IDENTIFIER\n                      | SINGLE_QUOTES_ENCLOSED_IDENTIFIER\n                      | DOUBLE_QUOTES_ENCLOSED_IDENTIFIERpipe : PIPE"
 
 _lr_action_items = {
     "IDENTIFIER": (
@@ -234,14 +234,14 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
     ("S' -> pipeline", "S'", 1, None, None, None),
-    ("pipeline -> expression", "pipeline", 1, "p_pipeline", "semantic_parser.py", 21),
+    ("pipeline -> expression", "pipeline", 1, "p_pipeline", "semantic_parser.py", 22),
     (
         "pipeline -> pipeline pipe expression",
         "pipeline",
         3,
         "p_pipeline",
         "semantic_parser.py",
-        22,
+        23,
     ),
     (
         "expression -> identifier",

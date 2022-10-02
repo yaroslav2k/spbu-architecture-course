@@ -17,7 +17,7 @@ def test_cat_argument():
 
 
 def test_assign_argument():
-    assert type(perform("assign")) == AssignCommand
+    assert type(perform("__internal_assign")) == AssignCommand
 
 
 def test_wc_argument():
