@@ -39,6 +39,8 @@ class Executor:
                 input_stream, output_stream, sys.stderr
             ).execute(command[0], command[1])
 
+            if index:
+                input_stream.close()
             input_stream, output_stream = output_stream, self._create_stream()
             if not is_last_command:
                 input_stream.seek(0)
