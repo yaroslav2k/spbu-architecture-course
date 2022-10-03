@@ -1,6 +1,4 @@
 import subprocess
-import sys
-import platform
 
 from pybash.commands.base_command import BaseCommand
 from pybash.commands.command_streams import CommandStreams
@@ -10,6 +8,7 @@ from pybash.environment import Environment
 
 class ExternalCommand(BaseCommand):
     def run(self, arguments: list[str], streams: CommandStreams) -> int:
+        # import pdb; pdb.set_trace()
         try:
             completed_process = subprocess.run(
                 arguments,
