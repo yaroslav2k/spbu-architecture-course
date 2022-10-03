@@ -25,7 +25,7 @@ def test_default():
 
     assert result[0].type == "IDENTIFIER"
     assert result[1].type == "IDENTIFIER"
-    assert result[2].type == "QUOTES_ENCLOSED_IDENTIFIER"
+    assert result[2].type == "SINGLE_QUOTES_ENCLOSED_IDENTIFIER"
 
 
 def test_assignment():
@@ -35,6 +35,71 @@ def test_assignment():
     assert type(result[0]) == LexToken
     assert result[0].value == "joy=division"
     assert result[0].type == "ASSIGNMENT"
+
+
+def test_basic_pipe():
+    result = perform("foo bar | echo")
+
+    expected_length = 4
+    assert (len(result)) == expected_length
+
+    for i in range(expected_length):
+        assert type(result[i]) == LexToken
+
+    expected_values = ["foo", "bar", "|", "echo"]
+    for i in range(expected_length):
+        assert result[i].value == expected_values[i]
+
+    expected_types = ["IDENTIFIER", "IDENTIFIER", "PIPE", "IDENTIFIER"]
+    for i in range(expected_length):
+        assert result[i].type == expected_types[i]
+
+
+def test_multiple_pipes():
+    result = perform("cat | echo | eval | shutdown now")
+
+    expected_length = 8
+    assert (len(result)) == expected_length
+
+    for i in range(expected_length):
+        assert type(result[i]) == LexToken
+
+    expected_values = ["cat", "|", "echo", "|", "eval", "|", "shutdown", "now"]
+    for i in range(expected_length):
+        assert result[i].value == expected_values[i]
+
+    expected_types = [
+        "IDENTIFIER",
+        "PIPE",
+        "IDENTIFIER",
+        "PIPE",
+        "IDENTIFIER",
+        "PIPE",
+        "IDENTIFIER",
+        "IDENTIFIER",
+    ]
+    for i in range(expected_length):
+        assert result[i].type == expected_types[i]
+
+
+def test_substituions():
+    Environment().set("joy", "division")
+
+    result = perform("echo $joy")
+
+    expected_length = 2
+    assert (len(result)) == expected_length
+
+    for i in range(expected_length):
+        assert type(result[i]) == LexToken
+
+    expected_values = ["echo", "division"]
+    for i in range(expected_length):
+        assert result[i].value == expected_values[i]
+
+    expected_types = ["IDENTIFIER", "IDENTIFIER"]
+    for i in range(expected_length):
+        assert result[i].type == expected_types[i]
 
 
 def test_error_not_debug():

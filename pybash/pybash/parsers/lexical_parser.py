@@ -1,10 +1,16 @@
 from ply import lex
 from pybash.custom_exceptions import ParsingFailureException
-from pybash.environment import Environment
+from pybash.substitution_processor import SubstitutionProcessor
 
 
 class LexicalParser:
-    tokens = ("ASSIGNMENT", "IDENTIFIER", "QUOTES_ENCLOSED_IDENTIFIER")
+    tokens = (
+        "ASSIGNMENT",
+        "IDENTIFIER",
+        "SINGLE_QUOTES_ENCLOSED_IDENTIFIER",
+        "DOUBLE_QUOTES_ENCLOSED_IDENTIFIER",
+        "PIPE",
+    )
 
     t_ignore = " \t\n"
 
@@ -26,19 +32,42 @@ class LexicalParser:
     def t_ASSIGNMENT(self, t):
         r"\S+=\S+"
 
+        self._on_parse_callback(t)
+
+        return t
+
+    def t_PIPE(self, t):
+        r"\|"
+
+        self._on_parse_callback(t)
+
         return t
 
     def t_IDENTIFIER(self, t):
         r"[^ \t\n\r\f\v=\'\"]+"
 
+        self._on_parse_callback(t)
         return t
 
-    def t_QUOTES_ENCLOSED_IDENTIFIER(self, t):
-        r"\'[^\t\n\r\f\v=]*\'|\"[^\t\n\r\f\v=]*\" "
+    def t_SINGLE_QUOTES_ENCLOSED_IDENTIFIER(self, t):
+        r"""\'[^\t\n\r\f\v=\|]*\'"""
 
         t.value = t.value[1:-1]
+        self._on_parse_callback(t)
+
+        return t
+
+    def t_DOUBLE_QUOTES_ENCLOSED_IDENTIFIER(self, t):
+        r"""\"[^\t\n\r\f\v=\|]*\" """
+
+        t.value = t.value[1:-1]
+        self._on_parse_callback(t)
 
         return t
 
     def t_error(self, t):
         raise ParsingFailureException()
+
+    def _on_parse_callback(self, t):
+        if t.type == "IDENTIFIER" or t.type == "DOUBLE_QUOTES_ENCLOSED_IDENTIFIER":
+            t.value = SubstitutionProcessor().substitute(t.value)

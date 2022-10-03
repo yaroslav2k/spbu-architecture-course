@@ -10,7 +10,7 @@
 
 В дальшейшем подразумевается, что python3 указывает на интерпретатор именно этой версии. (`python3 --version # => 3.10.*`)
 
-Оффициальный мануал по установке poetry: https://python-poetry.org/docs/#installation
+Официальный мануал по установке poetry: https://python-poetry.org/docs/#installation
 
 ## Linux:
 

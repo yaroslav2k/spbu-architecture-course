@@ -1,6 +1,4 @@
 import subprocess
-import sys
-import platform
 
 from pybash.commands.base_command import BaseCommand
 from pybash.commands.command_streams import CommandStreams

@@ -1,12 +1,13 @@
-from pybash.command import Command
 from pybash.custom_exceptions import ParsingFailureException
 from pybash.environment import Environment
+from pybash.commands.assign_command import AssignCommand
+
 
 import ply.yacc as yacc
 
 
 class SemanticParser:
-    start = "expression"
+    precedence = (("left", "PIPE"), ("left", "IDENTIFIER"))
 
     def __init__(self, tokens):
         self.tokens = tokens
@@ -15,27 +16,20 @@ class SemanticParser:
     def parse(self, string):
         return self.parser.parse(string)
 
-    def p_empty(self, p):
-        "empty :"
-        pass
-
-    def p_identifier(self, p):
+    def p_pipeline(self, p):
         # fmt: off
-        """identifier : IDENTIFIER
-                      | QUOTES_ENCLOSED_IDENTIFIER"""
+        """pipeline : expression
+                    | pipeline pipe expression"""
         # fmt: on
-        p[0] = [p[1]]
 
-    def p_assignment(self, p):
-        "assignment : ASSIGNMENT"
-
-        tokens = p[1].split("=")
-        p[0] = ["assign", tokens[0], tokens[1]]
+        if len(p) == 2:
+            p[0] = [p[1]]
+        else:
+            p[0] = p[1] + [p[3]]
 
     def p_expression(self, p):
         # fmt: off
-        """expression : empty
-                      | identifier
+        """expression : identifier
                       | expression identifier
                       | assignment"""
         # fmt: on
@@ -43,6 +37,25 @@ class SemanticParser:
             p[0] = (p[1] or []) + p[2]
         else:
             p[0] = p[1]
+
+    def p_assignment(self, p):
+        """assignment : ASSIGNMENT"""
+
+        tokens = p[1].split("=")
+        p[0] = [AssignCommand._INTERNAL_IDENTIFIER, tokens[0], tokens[1]]
+
+    def p_identifier(self, p):
+        # fmt: off
+        """identifier : IDENTIFIER
+                      | SINGLE_QUOTES_ENCLOSED_IDENTIFIER
+                      | DOUBLE_QUOTES_ENCLOSED_IDENTIFIER"""
+        # fmt: on
+        p[0] = [p[1]]
+
+    def p_pipe(self, p):
+        """pipe : PIPE"""
+
+        pass
 
     def p_error(self, p):
         if Environment().get("PYBASH_DEBUG") == "true":
