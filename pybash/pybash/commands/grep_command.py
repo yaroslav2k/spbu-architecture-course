@@ -15,6 +15,7 @@ class GrepCommand(BaseCommand):
             word_regexp: bool
             ignore_case: bool
             after_context: int
+            search: str
             files: list[str]
 
         def __init__(self):
@@ -32,17 +33,27 @@ class GrepCommand(BaseCommand):
             except argparse.ArgumentError as e:
                 raise InvalidArgumentException(str(e))
 
+            files = files or []
+
             return self.Result(
                 word_regexp=arguments.word_regexp,
                 ignore_case=arguments.ignore_case,
                 after_context=arguments.after_context,
-                files=files,
+                search=files[0] if len(files) else None,
+                files=files[1:],
             )
 
     def run(self, arguments: list[str], streams: CommandStreams) -> int:
         parsed_arguments = self._ArgumentsParser().parse(arguments)
+        self._validate_arguments(parsed_arguments)
 
         # TODO: Provide required implementation.
         streams.output.write(f"Invoked grep via {parsed_arguments}\n")
 
         return BaseCommand.EXIT_SUCCESS
+
+    def _validate_arguments(self, arguments: _ArgumentsParser.Result) -> None:
+        if arguments.search is None or not len(arguments.files):
+            raise InvalidArgumentException(
+                "error: provide a string to search find and file(s) to search in"
+            )
