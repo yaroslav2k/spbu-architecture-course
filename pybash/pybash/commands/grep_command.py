@@ -55,5 +55,5 @@ class GrepCommand(BaseCommand):
     def _validate_arguments(self, arguments: _ArgumentsParser.Result) -> None:
         if arguments.search is None or not len(arguments.files):
             raise InvalidArgumentException(
-                "error: provide a string to search find and file(s) to search in"
+                "error: provide a string to search and file(s) to search in"
             )
