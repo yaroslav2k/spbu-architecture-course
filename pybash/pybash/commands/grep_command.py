@@ -21,12 +21,7 @@ class GrepCommand(BaseCommand):
             files: list[str]
 
         def __init__(self):
-            parser = argparse.ArgumentParser(add_help=False, exit_on_error=False)
-            parser.add_argument("-w", "--word-regexp", action="store_true")
-            parser.add_argument("-i", "--ignore-case", action="store_true")
-            parser.add_argument("-A", "--after-context", type=int)
-
-            self._parser = parser
+            self._parser = self._build_parser()
 
         def parse(self, value: str) -> Result:
             arguments, files = None, None
@@ -44,6 +39,14 @@ class GrepCommand(BaseCommand):
                 search=files[0] if len(files) else None,
                 files=files[1:],
             )
+
+        def _build_parser(self) -> argparse.ArgumentParser:
+            parser = argparse.ArgumentParser(add_help=False, exit_on_error=False)
+            parser.add_argument("-w", "--word-regexp", action="store_true")
+            parser.add_argument("-i", "--ignore-case", action="store_true")
+            parser.add_argument("-A", "--after-context", type=int)
+
+            return parser
 
     def run(self, arguments: list[str], streams: CommandStreams) -> int:
         parsed_arguments = self._ArgumentsParser().parse(arguments)
@@ -64,6 +67,10 @@ class GrepCommand(BaseCommand):
         for file_path in parsed_arguments.files:
             if not os.path.exists(file_path):
                 streams.output.write(f"grep: {file_path}: No such file or directory\n")
+                exit_code = 2
+                continue
+            elif os.path.isdir(file_path):
+                streams.output.write(f"grep: {file_path}: Is a directory\n")
                 exit_code = 2
                 continue
             inside_paragraph = False
