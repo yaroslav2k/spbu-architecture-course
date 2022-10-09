@@ -69,6 +69,9 @@ class GrepCommand(BaseCommand):
                 streams.output.write(f"grep: {file_path}: No such file or directory\n")
                 exit_code = 2
                 continue
+            elif not os.access(file_path, os.R_OK):
+                streams.output.write(f"grep: {file_path}: Permission denied\n")
+                exit_code = 2
             elif os.path.isdir(file_path):
                 streams.output.write(f"grep: {file_path}: Is a directory\n")
                 exit_code = 2
