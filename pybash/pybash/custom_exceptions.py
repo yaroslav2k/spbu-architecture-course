@@ -8,3 +8,7 @@ class ParsingFailureException(Exception):
 
 class UnknownCommandException(Exception):
     """We use this exception when command does not exist"""
+
+
+class InvalidArgumentException(Exception):
+    """We use this exception when invalid arguments were provided"""

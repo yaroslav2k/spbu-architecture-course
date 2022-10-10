@@ -52,4 +52,4 @@ class Parser:
             )
 
     def _prepare_user_provided_string(self, string):
-        return string.replace('\\"', '"')
+        return string.replace('\\"', '"').replace("\\|", "|")

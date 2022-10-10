@@ -9,9 +9,12 @@ def perform(value):
     return Parser().parse(value)
 
 
-def test_parse():
+def setup_environment():
     Environment().set("KEY_1", "VAL_1")
-    Environment().set("KEY_2", "VAL_2")
+
+
+def test_basic():
+    setup_environment()
 
     expectations = [
         ("cat abc.txt data.json", ParsingResult([["cat", ["abc.txt", "data.json"]]])),
@@ -28,6 +31,18 @@ def test_parse():
         ("   cat", ParsingResult([["cat", []]])),
         ("cat      ", ParsingResult([["cat", []]])),
         ("1cat", ParsingResult([["1cat", []]])),
+    ]
+
+    for expectation_entry in expectations:
+        result = perform(expectation_entry[0])
+
+        assert perform(expectation_entry[0]) == expectation_entry[1]
+
+
+def test_basic_commands_with_quotes():
+    setup_environment()
+
+    expectations = [
         ("./executable", ParsingResult([["./executable", []]])),
         ("./executable foo bar", ParsingResult([["./executable", ["foo", "bar"]]])),
         ('./executable foo "bar"', ParsingResult([["./executable", ["foo", "bar"]]])),
@@ -45,10 +60,33 @@ def test_parse():
         ),
         ("a=b", ParsingResult([["__internal_assign", ["a", "b"]]])),
         ("executable '' abc", ParsingResult([["executable", ["", "abc"]]])),
+    ]
+
+    for expectation_entry in expectations:
+        result = perform(expectation_entry[0])
+
+        assert perform(expectation_entry[0]) == expectation_entry[1]
+
+
+def test_blank_commands():
+    setup_environment()
+
+    expectations = [
         ("", None),
         ("       ", None),
         ("    \t   \n", None),
-        # pipes
+    ]
+
+    for expectation_entry in expectations:
+        result = perform(expectation_entry[0])
+
+        assert perform(expectation_entry[0]) == expectation_entry[1]
+
+
+def test_pipes():
+    setup_environment()
+
+    expectations = [
         ("foo | bar", ParsingResult([["foo", []], ["bar", []]])),
         ("foo | bar a123 -c", ParsingResult([["foo", []], ["bar", ["a123", "-c"]]])),
         ("foo foo foo | bar", ParsingResult([["foo", ["foo", "foo"]], ["bar", []]])),

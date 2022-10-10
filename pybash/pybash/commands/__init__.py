@@ -5,5 +5,6 @@ from .command_streams import CommandStreams
 from .echo_command import EchoCommand
 from .exit_command import ExitCommand
 from .external_command import ExternalCommand
+from .grep_command import GrepCommand
 from .pwd_command import PwdCommand
 from .wc_command import WcCommand

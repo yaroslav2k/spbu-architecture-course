@@ -54,3 +54,7 @@ pip install .\pybash\
 python .\pybash\pybash\cli.py
 ```
 
+# grep
+
+В качестве инструмента для парсинга опций командной строки рассматривались основные более-менее популярные варианты, в том числе [argparse](https://pypi.org/project/argparse/), [click](https://pypi.org/project/click/) и [docopt](https://pypi.org/project/docopt/), однако
+в итоге был выбран `argparse` - стандарт de facto, предоставляющий простой и понятный интерфейс и достаточную для решения задачи функциональность.

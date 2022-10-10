@@ -23,6 +23,7 @@ class Command:
             "wc": WcCommand,
             "pwd": PwdCommand,
             "exit": ExitCommand,
+            "grep": GrepCommand,
             AssignCommand._INTERNAL_IDENTIFIER: AssignCommand,
         }
 

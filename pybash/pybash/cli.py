@@ -3,6 +3,7 @@ from pybash.custom_exceptions import (
     UserExitException,
     ParsingFailureException,
     UnknownCommandException,
+    InvalidArgumentException,
 )
 
 
@@ -25,6 +26,8 @@ class CLI:
                 print("Syntax error")
             except UnknownCommandException as e:
                 print(f"{e.args[0]}: command not found")
+            except InvalidArgumentException as e:
+                print(e.args[0])
             except BaseException:
                 print("Unknown error")
 
