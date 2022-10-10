@@ -54,7 +54,9 @@ class GrepCommand(BaseCommand):
 
         pattern = parsed_arguments.search
         if parsed_arguments.word_regexp:
-            pattern = r"\b" + pattern + r"\b"
+            pattern = "|".join(
+                list(map(lambda x: r"\b" + x + r"\b", pattern.split("|")))
+            )
 
         pattern_compiled = None
         if parsed_arguments.ignore_case:
