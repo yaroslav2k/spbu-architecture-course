@@ -141,3 +141,23 @@ def test_single_pattern_multiple_files_A_param(mocker, command_streams, file_A, 
         ]
     )
     assert result == 0
+
+
+def test_multiple_patterns_multiple_files_w_param(mocker, command_streams, file_A, file_B):
+    mocker.patch("sys.stdout.write")
+    fA, _ = file_A
+    fB, _ = file_B
+    arguments = ["-w", "Hell|ruel", str(fA), str(fB)]
+    result = GrepCommand().run(arguments, command_streams)
+    sys.stdout.write.assert_not_called()
+    assert result == 1
+
+    arguments = ["-w", "Hello|cruel", str(fA), str(fB)]
+    result = GrepCommand().run(arguments, command_streams)
+    sys.stdout.write.assert_has_calls(
+        [
+            call(f"{fA}:Hello world!\n"),
+            call(f"{fB}:goodbye cruel world!\n"),
+        ]
+    )
+    assert result == 0
