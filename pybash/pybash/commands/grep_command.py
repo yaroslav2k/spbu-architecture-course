@@ -1,11 +1,13 @@
 import argparse
 from dataclasses import dataclass
+from pathlib import Path
 import re
 import os
 
 from pybash.commands.base_command import BaseCommand
 from pybash.commands.command_streams import CommandStreams
 from pybash.custom_exceptions import InvalidArgumentException
+from pybash.environment import Environment
 
 
 class GrepCommand(BaseCommand):
@@ -66,20 +68,22 @@ class GrepCommand(BaseCommand):
 
         exit_code = 1
         num_paragraphs = 0
+        cur_path = Path(Environment().get('PWD'))
         for file_path in parsed_arguments.files:
-            if not os.path.exists(file_path):
+            full_file_path = cur_path / file_path
+            if not full_file_path.exists():
                 streams.output.write(f"grep: {file_path}: No such file or directory\n")
                 exit_code = 2
                 continue
-            elif not os.access(file_path, os.R_OK):
+            elif not os.access(full_file_path, os.R_OK):
                 streams.output.write(f"grep: {file_path}: Permission denied\n")
                 exit_code = 2
-            elif os.path.isdir(file_path):
+            elif full_file_path.is_dir():
                 streams.output.write(f"grep: {file_path}: Is a directory\n")
                 exit_code = 2
                 continue
             inside_paragraph = False
-            with open(file_path, "r") as file:
+            with open(full_file_path, 'r', encoding='utf-8') as file:
                 last_match_line = None
                 for idx, line in enumerate(file):
                     match = pattern_compiled.search(line)

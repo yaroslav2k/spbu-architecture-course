@@ -15,6 +15,7 @@ class ExternalCommand(BaseCommand):
                 stdout=streams.output,
                 stderr=streams.error,
                 env=Environment().get_variables(),
+                cwd=Environment().get('PWD'),
             )
         except FileNotFoundError:
             raise UnknownCommandException(arguments[0])

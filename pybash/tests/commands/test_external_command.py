@@ -28,7 +28,7 @@ def test_run_successful_result(mocker, command_streams):
 
     assert result == 0
     subprocess.run.assert_called_once_with(
-        arguments, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, env=ANY
+        arguments, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, env=ANY, cwd=Environment().get('PWD'),
     )
     assert isinstance(subprocess.run.call_args[1]["env"], dict)
 
@@ -43,7 +43,7 @@ def test_run_failure_result(mocker, command_streams):
 
     assert result == 1
     subprocess.run.assert_called_once_with(
-        arguments, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, env=ANY
+        arguments, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr, env=ANY, cwd=Environment().get('PWD'),
     )
     assert isinstance(subprocess.run.call_args[1]["env"], dict)
 

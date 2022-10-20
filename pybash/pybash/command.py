@@ -24,6 +24,8 @@ class Command:
             "pwd": PwdCommand,
             "exit": ExitCommand,
             "grep": GrepCommand,
+            "ls": LsCommand,
+            "cd": CdCommand,
             AssignCommand._INTERNAL_IDENTIFIER: AssignCommand,
         }
 
