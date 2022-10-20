@@ -28,8 +28,8 @@ class CLI:
                 print(f"{e.args[0]}: command not found")
             except InvalidArgumentException as e:
                 print(e.args[0])
-            except BaseException:
-                print("Unknown error")
+            except BaseException as e:
+                print("Unknown error: ", e)
 
 
 if __name__ == "__main__":
